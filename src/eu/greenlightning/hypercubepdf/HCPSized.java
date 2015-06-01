@@ -10,6 +10,18 @@ public class HCPSized implements HCPElement {
 
 	public static final float USE_ELEMENT_SIZE = -1;
 
+	public static HCPSized withInfiniteWidth(HCPElement element) {
+		return withWidth(element, Float.POSITIVE_INFINITY);
+	}
+
+	public static HCPSized withInfiniteHeight(HCPElement element) {
+		return withHeight(element, Float.POSITIVE_INFINITY);
+	}
+
+	public static HCPSized withInfiniteSize(HCPElement element) {
+		return withSize(element, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY);
+	}
+
 	public static HCPSized withWidth(HCPElement element, float width) {
 		return new HCPSized(element, width, USE_ELEMENT_SIZE);
 	}
