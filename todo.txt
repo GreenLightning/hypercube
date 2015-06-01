@@ -1,0 +1,6 @@
+- refactor alignment code
+- refactor area border code
+- colored borders
+- rewrite layout code
+- documentation
+- examples
