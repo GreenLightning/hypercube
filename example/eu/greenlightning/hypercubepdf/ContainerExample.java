@@ -28,9 +28,9 @@ public class ContainerExample {
 		HCPElement b = createBox("B", new Color(0, 64, 0), Color.GREEN);
 		HCPElement c = createBox("C", Color.BLUE, Color.CYAN);
 
-		a = HCPSized.withSize(a, 25, 200);
-		b = HCPSized.withSize(b, 50, 100);
-		c = HCPSized.withSize(c, 100, 50);
+		a = HCPSized.withSize(a,  50, 200);
+		b = HCPSized.withSize(b, 100, 100);
+		c = HCPSized.withSize(c, 150,  50);
 
 		HCPElement horizontal = HCPContainers.getHorizontalSplit(a, b, c);
 		HCPElement vertical = HCPContainers.getVerticalSplit(10, a, b, c);
