@@ -67,14 +67,8 @@ public enum HCPAlignment {
 	}
 
 	public void alignShapeWithParent(PDRectangle shape, PDRectangle parent) {
-		Objects.requireNonNull(shape, "Shape must not be null.");
-		Objects.requireNonNull(parent, "Parent must not be null.");
-		float width = shape.getWidth();
-		float height = shape.getHeight();
-		shape.setLowerLeftX(getHorizontalAlignment().getX(width, parent));
-		shape.setLowerLeftY(getVerticalAlignment().getY(height, parent));
-		shape.setUpperRightX(shape.getLowerLeftX() + width);
-		shape.setUpperRightY(shape.getLowerLeftY() + height);
+		getHorizontalAlignment().alignShapeWithParent(shape, parent);
+		getVerticalAlignment().alignShapeWithParent(shape, parent);
 	}
 
 }

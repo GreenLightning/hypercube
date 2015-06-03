@@ -10,16 +10,36 @@ import eu.greenlightning.hypercubepdf.HCPElement;
 
 public class HCPAligned implements HCPElement {
 
-	private final HCPElement element;
-	private final HCPAlignment alignment;
-
-	public HCPAligned(HCPElement element, HCPHorizontalAlignment horizontal, HCPVerticalAlignment vertical) {
-		this(element, HCPAlignment.valueOf(horizontal, vertical));
+	public static HCPAligned withHorizontalAlignment(HCPElement element, HCPHorizontalAlignment horizontal) {
+		Objects.requireNonNull(horizontal, "Horizontal must not be null.");
+		return new HCPAligned(element, horizontal, null);
 	}
 
-	public HCPAligned(HCPElement element, HCPAlignment alignment) {
+	public static HCPAligned withVerticalAlignment(HCPElement element, HCPVerticalAlignment vertical) {
+		Objects.requireNonNull(vertical, "Vertical must not be null.");
+		return new HCPAligned(element, null, vertical);
+	}
+
+	public static HCPAligned withAlignment(HCPElement element, HCPAlignment alignment) {
+		Objects.requireNonNull(alignment, "Alignment must not be null.");
+		return new HCPAligned(element, alignment.getHorizontalAlignment(), alignment.getVerticalAlignment());
+	}
+
+	public static HCPAligned withAlignment(HCPElement element, HCPHorizontalAlignment horizontal,
+		HCPVerticalAlignment vertical) {
+		Objects.requireNonNull(horizontal, "Horizontal must not be null.");
+		Objects.requireNonNull(vertical, "Vertical must not be null.");
+		return new HCPAligned(element, horizontal, vertical);
+	}
+
+	private final HCPElement element;
+	private final HCPHorizontalAlignment horizontal;
+	private final HCPVerticalAlignment vertical;
+
+	private HCPAligned(HCPElement element, HCPHorizontalAlignment horizontal, HCPVerticalAlignment vertical) {
 		this.element = Objects.requireNonNull(element, "Element must not be null.");
-		this.alignment = Objects.requireNonNull(alignment, "Alignment must not be null.");
+		this.horizontal = horizontal;
+		this.vertical = vertical;
 	}
 
 	@Override
@@ -33,10 +53,29 @@ public class HCPAligned implements HCPElement {
 	}
 
 	@Override
-	public void paint(PDPageContentStream content, PDRectangle shape) throws IOException {
+	public void paint(PDPageContentStream content, PDRectangle parentShape) throws IOException {
 		PDRectangle elementShape = new PDRectangle(element.getWidth(), element.getHeight());
-		alignment.alignShapeWithParent(elementShape, shape);
+		alignHorizontally(elementShape, parentShape);
+		alignVertically(elementShape, parentShape);
 		element.paint(content, elementShape);
+	}
+
+	private void alignHorizontally(PDRectangle elementShape, PDRectangle parentShape) {
+		if (horizontal == null) {
+			elementShape.setLowerLeftX(parentShape.getLowerLeftX());
+			elementShape.setUpperRightX(parentShape.getUpperRightX());
+		} else {
+			horizontal.alignShapeWithParent(elementShape, parentShape);
+		}
+	}
+
+	private void alignVertically(PDRectangle elementShape, PDRectangle parentShape) {
+		if (vertical == null) {
+			elementShape.setLowerLeftY(parentShape.getLowerLeftY());
+			elementShape.setUpperRightY(parentShape.getUpperRightY());
+		} else {
+			vertical.alignShapeWithParent(elementShape, parentShape);
+		}
 	}
 
 }

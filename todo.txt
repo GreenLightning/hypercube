@@ -1,4 +1,3 @@
-- refactor alignment code
 - colored borders
 - rewrite layout code
 - documentation

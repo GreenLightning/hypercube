@@ -1,28 +1,37 @@
 package eu.greenlightning.hypercubepdf.align;
 
+import static eu.greenlightning.hypercubepdf.align.HCPAlignedPosition.*;
+
+import java.util.Objects;
+
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
 public enum HCPHorizontalAlignment {
 
-	LEFT {
-		@Override
-		public float getX(float width, PDRectangle parent) {
-			return parent.getLowerLeftX();
-		}
-	},
-	CENTER {
-		@Override
-		public float getX(float width, PDRectangle parent) {
-			return parent.getLowerLeftX() + (parent.getWidth() - width) / 2;
-		}
-	},
-	RIGHT {
-		@Override
-		public float getX(float width, PDRectangle parent) {
-			return parent.getUpperRightX() - width;
-		}
-	};
+	// Horizontal axis points right
+	LEFT(BEGINNING), CENTER(MIDDLE), RIGHT(END);
 
-	public abstract float getX(float width, PDRectangle parent);
+	private final HCPAlignedPosition position;
+
+	private HCPHorizontalAlignment(HCPAlignedPosition position) {
+		this.position = Objects.requireNonNull(position);
+	}
+
+	public float align(float width, float leftX, float rightX) {
+		return position.align(width, leftX, rightX);
+	}
+
+	public float alignWithParent(float width, PDRectangle parent) {
+		Objects.requireNonNull(parent, "Parent must not be null.");
+		return align(width, parent.getLowerLeftX(), parent.getUpperRightX());
+	}
+
+	public void alignShapeWithParent(PDRectangle shape, PDRectangle parent) {
+		Objects.requireNonNull(shape, "Shape must not be null.");
+		float width = shape.getWidth();
+		float x = alignWithParent(width, parent);
+		shape.setLowerLeftX(x);
+		shape.setUpperRightX(x + width);
+	}
 
 }

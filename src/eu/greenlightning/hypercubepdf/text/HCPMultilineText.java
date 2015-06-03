@@ -65,7 +65,7 @@ public class HCPMultilineText extends HCPAbstractText {
 		float verticalOffset = (lineSpacing - 1) * style.getHeight() - style.getDescent();
 		content.setTextTranslation(x, y + getHeight() + verticalOffset);
 		for (String line : lines) {
-			float lineOffset = alignment.getX(style.getStringWidth(line), size);
+			float lineOffset = alignment.alignWithParent(style.getStringWidth(line), size);
 			content.moveTextPositionByAmount(lineOffset, -lineSpacing * style.getHeight());
 			content.drawString(line);
 			content.moveTextPositionByAmount(-lineOffset, 0);
