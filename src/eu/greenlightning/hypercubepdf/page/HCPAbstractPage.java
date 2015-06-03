@@ -3,7 +3,8 @@ package eu.greenlightning.hypercubepdf.page;
 import java.io.IOException;
 import java.util.Objects;
 
-import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 
@@ -26,6 +27,11 @@ abstract class HCPAbstractPage implements HCPPage {
 
 	public HCPAbstractPage(PDDocument document, PDRectangle size) {
 		this(document, new PDPage(size));
+	}
+	
+	@Override
+	public PDPage asPDPage() {
+		return page;
 	}
 
 	@Override
