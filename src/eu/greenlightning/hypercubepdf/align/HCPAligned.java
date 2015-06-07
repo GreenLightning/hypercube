@@ -54,7 +54,9 @@ public class HCPAligned implements HCPElement {
 
 	@Override
 	public void paint(PDPageContentStream content, PDRectangle parentShape) throws IOException {
-		PDRectangle elementShape = new PDRectangle(element.getWidth(), element.getHeight());
+		float width = Math.min(element.getWidth(), parentShape.getWidth());
+		float height = Math.min(element.getHeight(), parentShape.getHeight());
+		PDRectangle elementShape = new PDRectangle(width, height);
 		alignHorizontally(elementShape, parentShape);
 		alignVertically(elementShape, parentShape);
 		element.paint(content, elementShape);
