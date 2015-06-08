@@ -8,23 +8,111 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 
 import eu.greenlightning.hypercubepdf.HCPElement;
 
+/**
+ * An {@link HCPElement} wrapper which aligns the element inside the shape in which it is painted.
+ * <p>
+ * Calls to {@linkplain #getWidth()} and {@linkplain #getHeight()} are delegated to the element.
+ * <p>
+ * While painting, if the element is bigger than the shape, it will be painted in the size of the shape. Otherwise it
+ * will be painted in the size returned by it's {@linkplain HCPElement#getWidth() getWidth()} or
+ * {@linkplain HCPElement#getHeight() getHeight()} method and it's bounding box will be placed in the target shape using
+ * the alignment. This logic is applied to the width and height individually.
+ * <p>
+ * If no alignment is specified ({@linkplain #withHorizontalAlignment(HCPElement, HCPHorizontalAlignment)
+ * withHorizontalAlignment()} does not specify a vertical alignment and
+ * {@linkplain #withVerticalAlignment(HCPElement, HCPVerticalAlignment) withVerticalAlignment()} does not specify a
+ * horizontal alignment), then the element is painted using the size of the shape.
+ * <p>
+ * Please refer to the documentation of the static factory methods of this class for specific descriptions of the
+ * alignment process.
+ * <p>
+ * This class is immutable.
+ *
+ * @author Green Lightning
+ */
 public class HCPAligned implements HCPElement {
 
+	/**
+	 * Aligns the element horizontally.
+	 * <p>
+	 * If the element is wider than the shape, it will be painted using the full width of the shape. Otherwise it will
+	 * be painted using the width returned by it's {@linkplain HCPElement#getWidth() getWidth()} method and it's
+	 * bounding box will be placed in the target shape using the specified horizontal alignment. The element will always
+	 * be painted using the full height of the shape.
+	 * 
+	 * @param element not {@code null}
+	 * @param horizontal not {@code null}
+	 * @return a wrapper for element with the specified horizontal alignment
+	 * @throws NullPointerException if element or horizontal is {@code null}
+	 */
 	public static HCPAligned withHorizontalAlignment(HCPElement element, HCPHorizontalAlignment horizontal) {
 		Objects.requireNonNull(horizontal, "Horizontal must not be null.");
 		return new HCPAligned(element, horizontal, null);
 	}
 
+	/**
+	 * Aligns the element vertically.
+	 * <p>
+	 * If the element is higher than the shape, it will be painted using the full height of the shape. Otherwise it will
+	 * be painted using the height returned by it's {@linkplain HCPElement#getHeight() getHeight()} method and it's
+	 * bounding box will be placed in the target shape using the specified vertical alignment. The element will always
+	 * be painted using the full width of the shape.
+	 * 
+	 * @param element not {@code null}
+	 * @param vertical not {@code null}
+	 * @return a wrapper for element with the specified vertical alignment
+	 * @throws NullPointerException if element or vertical is {@code null}
+	 */
 	public static HCPAligned withVerticalAlignment(HCPElement element, HCPVerticalAlignment vertical) {
 		Objects.requireNonNull(vertical, "Vertical must not be null.");
 		return new HCPAligned(element, null, vertical);
 	}
 
+	/**
+	 * Aligns the element both horizontally and vertically.
+	 * <p>
+	 * While painting, if the element is bigger than the shape, it will be painted in the size of the shape. Otherwise
+	 * it will be painted in the size returned by it's {@linkplain HCPElement#getWidth() getWidth()} or
+	 * {@linkplain HCPElement#getHeight() getHeight()} method and it's bounding box will be placed in the target shape
+	 * using the alignment. This logic is applied to the width and height individually.
+	 * <p>
+	 * This operation is equivalent to calling:
+	 * <p>
+	 * {@code HCPAligned.withAlignment(element, alignment.getHorizontalAlignment(), alignment.getVerticalAlignment());}
+	 * 
+	 * @param element not {@code null}
+	 * @param alignment not {@code null}
+	 * @return a wrapper for element with the specified alignment
+	 * @throws NullPointerException if element or alignment is {@code null}
+	 * @see #withAlignment(HCPElement, HCPHorizontalAlignment, HCPVerticalAlignment)
+	 * @see HCPAlignment#getHorizontalAlignment()
+	 * @see HCPAlignment#getVerticalAlignment()
+	 */
 	public static HCPAligned withAlignment(HCPElement element, HCPAlignment alignment) {
 		Objects.requireNonNull(alignment, "Alignment must not be null.");
 		return new HCPAligned(element, alignment.getHorizontalAlignment(), alignment.getVerticalAlignment());
 	}
 
+	/**
+	 * Aligns the element both horizontally and vertically.
+	 * <p>
+	 * While painting, if the element is bigger than the shape, it will be painted in the size of the shape. Otherwise
+	 * it will be painted in the size returned by it's {@linkplain HCPElement#getWidth() getWidth()} or
+	 * {@linkplain HCPElement#getHeight() getHeight()} method and it's bounding box will be placed in the target shape
+	 * using the horizontal or vertical alignment. This logic is applied to the width and height individually.
+	 * <p>
+	 * This operation is equivalent to calling:
+	 * <p>
+	 * {@code HCPAligned.withAlignment(element, HCPAlignment.valueOf(horizontal, vertical));}
+	 * 
+	 * @param element not {@code null}
+	 * @param horizontal not {@code null}
+	 * @param vertical not {@code null}
+	 * @return a wrapper for element with the specified horizontal and vertical alignment
+	 * @throws NullPointerException if element, horizontal or vertical is {@code null}
+	 * @see #withAlignment(HCPElement, HCPAlignment)
+	 * @see HCPAlignment#valueOf(HCPHorizontalAlignment, HCPVerticalAlignment)
+	 */
 	public static HCPAligned withAlignment(HCPElement element, HCPHorizontalAlignment horizontal,
 		HCPVerticalAlignment vertical) {
 		Objects.requireNonNull(horizontal, "Horizontal must not be null.");
