@@ -13,10 +13,11 @@ import eu.greenlightning.hypercubepdf.HCPElement;
  * <p>
  * Calls to {@linkplain #getWidth()} and {@linkplain #getHeight()} are delegated to the element.
  * <p>
- * While painting, if the element is bigger than the shape, it will be painted in the size of the shape. Otherwise it
- * will be painted in the size returned by it's {@linkplain HCPElement#getWidth() getWidth()} or
- * {@linkplain HCPElement#getHeight() getHeight()} method and it's bounding box will be placed in the target shape using
- * the alignment. This logic is applied to the width and height individually.
+ * The element will be painted using the width returned by it's {@linkplain HCPElement#getWidth() getWidth()} method and
+ * it will be aligned in the target shape using the specified horizontal alignment. However, if the element is wider
+ * than the target shape, then it will be painted using the width of the target shape making alignment not necessary.
+ * The same logic is applied independently to the element's height calling it's {@linkplain HCPElement#getHeight()
+ * getHeight()} method.
  * <p>
  * If no alignment is specified ({@linkplain #withHorizontalAlignment(HCPElement, HCPHorizontalAlignment)
  * withHorizontalAlignment()} does not specify a vertical alignment and
@@ -35,10 +36,10 @@ public class HCPAligned implements HCPElement {
 	/**
 	 * Aligns the element horizontally.
 	 * <p>
-	 * If the element is wider than the shape, it will be painted using the full width of the shape. Otherwise it will
-	 * be painted using the width returned by it's {@linkplain HCPElement#getWidth() getWidth()} method and it's
-	 * bounding box will be placed in the target shape using the specified horizontal alignment. The element will always
-	 * be painted using the full height of the shape.
+	 * The element will be painted using the width returned by it's {@linkplain HCPElement#getWidth() getWidth()} method
+	 * and it will be aligned in the target shape using the specified horizontal alignment. However, if the element is
+	 * wider than the target shape, then it will be painted using the width of the target shape making alignment not
+	 * necessary. The element will always be painted using the height of the target shape.
 	 * 
 	 * @param element not {@code null}
 	 * @param horizontal not {@code null}
@@ -53,10 +54,10 @@ public class HCPAligned implements HCPElement {
 	/**
 	 * Aligns the element vertically.
 	 * <p>
-	 * If the element is higher than the shape, it will be painted using the full height of the shape. Otherwise it will
-	 * be painted using the height returned by it's {@linkplain HCPElement#getHeight() getHeight()} method and it's
-	 * bounding box will be placed in the target shape using the specified vertical alignment. The element will always
-	 * be painted using the full width of the shape.
+	 * The element will be painted using the height returned by it's {@linkplain HCPElement#getHeight() getHeight()}
+	 * method and it will be aligned in the target shape using the specified vertical alignment. However, if the element
+	 * is higher than the target shape, then it will be painted using the height of the target shape making alignment
+	 * not necessary. The element will always be painted using the width of the target shape.
 	 * 
 	 * @param element not {@code null}
 	 * @param vertical not {@code null}
@@ -71,10 +72,11 @@ public class HCPAligned implements HCPElement {
 	/**
 	 * Aligns the element both horizontally and vertically.
 	 * <p>
-	 * While painting, if the element is bigger than the shape, it will be painted in the size of the shape. Otherwise
-	 * it will be painted in the size returned by it's {@linkplain HCPElement#getWidth() getWidth()} or
-	 * {@linkplain HCPElement#getHeight() getHeight()} method and it's bounding box will be placed in the target shape
-	 * using the alignment. This logic is applied to the width and height individually.
+	 * The element will be painted using the width returned by it's {@linkplain HCPElement#getWidth() getWidth()} method
+	 * and it will be aligned in the target shape using the specified horizontal alignment. However, if the element is
+	 * wider than the target shape, then it will be painted using the width of the target shape making alignment not
+	 * necessary. The same logic is applied independently to the element's height calling it's
+	 * {@linkplain HCPElement#getHeight() getHeight()} method.
 	 * <p>
 	 * This operation is equivalent to calling:
 	 * <p>
@@ -96,10 +98,11 @@ public class HCPAligned implements HCPElement {
 	/**
 	 * Aligns the element both horizontally and vertically.
 	 * <p>
-	 * While painting, if the element is bigger than the shape, it will be painted in the size of the shape. Otherwise
-	 * it will be painted in the size returned by it's {@linkplain HCPElement#getWidth() getWidth()} or
-	 * {@linkplain HCPElement#getHeight() getHeight()} method and it's bounding box will be placed in the target shape
-	 * using the horizontal or vertical alignment. This logic is applied to the width and height individually.
+	 * The element will be painted using the width returned by it's {@linkplain HCPElement#getWidth() getWidth()} method
+	 * and it will be aligned in the target shape using the specified horizontal alignment. However, if the element is
+	 * wider than the target shape, then it will be painted using the width of the target shape making alignment not
+	 * necessary. The same logic is applied independently to the element's height calling it's
+	 * {@linkplain HCPElement#getHeight() getHeight()} method.
 	 * <p>
 	 * This operation is equivalent to calling:
 	 * <p>
