@@ -1,6 +1,6 @@
 package eu.greenlightning.hypercubepdf.align;
 
-enum HCPAlignedPosition {
+enum HCPLineAlignment {
 
 	BEGINNING {
 		@Override

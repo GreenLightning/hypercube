@@ -1,6 +1,6 @@
 package eu.greenlightning.hypercubepdf.align;
 
-import static eu.greenlightning.hypercubepdf.align.HCPAlignedPosition.*;
+import static eu.greenlightning.hypercubepdf.align.HCPLineAlignment.*;
 
 import java.util.Objects;
 
@@ -11,9 +11,9 @@ public enum HCPVerticalAlignment {
 	// Vertical axis points up
 	TOP(END), CENTER(MIDDLE), BOTTOM(BEGINNING);
 
-	private final HCPAlignedPosition position;
+	private final HCPLineAlignment position;
 
-	private HCPVerticalAlignment(HCPAlignedPosition position) {
+	private HCPVerticalAlignment(HCPLineAlignment position) {
 		this.position = Objects.requireNonNull(position);
 	}
 

@@ -1,6 +1,6 @@
 package eu.greenlightning.hypercubepdf.align;
 
-import static eu.greenlightning.hypercubepdf.align.HCPAlignedPosition.*;
+import static eu.greenlightning.hypercubepdf.align.HCPLineAlignment.*;
 
 import java.util.Objects;
 
@@ -11,9 +11,9 @@ public enum HCPHorizontalAlignment {
 	// Horizontal axis points right
 	LEFT(BEGINNING), CENTER(MIDDLE), RIGHT(END);
 
-	private final HCPAlignedPosition position;
+	private final HCPLineAlignment position;
 
-	private HCPHorizontalAlignment(HCPAlignedPosition position) {
+	private HCPHorizontalAlignment(HCPLineAlignment position) {
 		this.position = Objects.requireNonNull(position);
 	}
 
