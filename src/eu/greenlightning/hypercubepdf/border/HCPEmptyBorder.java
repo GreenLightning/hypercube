@@ -9,13 +9,14 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import eu.greenlightning.hypercubepdf.HCPElement;
 
 /**
- * An {@link HCPElement} wrapper which adds an empty border of a fixed size around the element.
+ * An {@link HCPElement} wrapper which adds an empty border of a fixed size around the element. The border can have
+ * different sizes on the four different sides of the element.
  * <p>
  * The {@link #getWidth()} and {@link #getHeight()} methods return the sum of the element's size and the size of the
  * border.
  * <p>
- * The element's {@link HCPElement#paint(PDPageContentStream, PDRectangle)} method will not be called if there is not
- * enough space for the border.
+ * The element's {@link HCPElement#paint(PDPageContentStream, PDRectangle)} method will not be called if there is no
+ * space left for the element.
  * <p>
  * This class is immutable.
  *
@@ -152,8 +153,8 @@ public class HCPEmptyBorder implements HCPElement {
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if any size is {@literal < 0}
 	 */
-	public static HCPEmptyBorder getTopRightBottomLeftInstance(HCPElement element, float top, float right, float bottom,
-		float left) {
+	public static HCPEmptyBorder getTopRightBottomLeftInstance(HCPElement element, float top, float right,
+		float bottom, float left) {
 		return new HCPEmptyBorder(element, top, right, bottom, left);
 	}
 

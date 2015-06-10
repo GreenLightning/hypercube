@@ -9,20 +9,56 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 
 import eu.greenlightning.hypercubepdf.HCPElement;
 
+/**
+ * An {@link HCPElement} wrapper which adds a colored border of a fixed size around the element. The border has the same
+ * size on all four sides.
+ * <p>
+ * The {@link #getWidth()} and {@link #getHeight()} methods return the sum of the element's size and the size of the
+ * border.
+ * <p>
+ * The element's {@link HCPElement#paint(PDPageContentStream, PDRectangle)} method will not be called if there is no
+ * space left for the element.
+ * <p>
+ * This class is immutable.
+ *
+ * @author Green Lightning
+ */
 public class HCPLineBorder implements HCPElement {
 
 	private final HCPElement element;
 	private final Color color;
 	private final float size;
 
+	/**
+	 * Constructs a black line border with size 1 around the element.
+	 * 
+	 * @param element not {@code null}
+	 * @throws NullPointerException if element is {@code null}
+	 */
 	public HCPLineBorder(HCPElement element) {
 		this(element, Color.BLACK);
 	}
 
+	/**
+	 * Constructs a line border with size 1 and the specified color around the element.
+	 * 
+	 * @param element not {@code null}
+	 * @param color not {@code null}
+	 * @throws NullPointerException if element or color is {@code null}
+	 */
 	public HCPLineBorder(HCPElement element, Color color) {
 		this(element, color, 1);
 	}
 
+	/**
+	 * Constructs a line border with the specified color and size around the element.
+	 * 
+	 * @param element not {@code null}
+	 * @param color not {@code null}
+	 * @param size must be {@literal > 0}
+	 * @throws NullPointerException if element or color is {@code null}
+	 * @throws IllegalArgumentException if size is {@literal <= 0}
+	 */
 	public HCPLineBorder(HCPElement element, Color color, float size) {
 		this.element = Objects.requireNonNull(element, "Element must not be null.");
 		this.color = Objects.requireNonNull(color, "Color must not be null.");
