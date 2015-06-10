@@ -3,4 +3,6 @@
 -classpath lib/pdfbox-app-1.8.9.jar;lib/xmpbox-1.8.9.jar
 -link http://docs.oracle.com/javase/8/docs/api/
 -link http://pdfbox.apache.org/docs/1.8.9/javadocs/
+-doctitle "Hypercube PDF"
+-windowtitle "Hypercube PDF Library API"
 -subpackages eu.greenlightning.hypercubepdf
