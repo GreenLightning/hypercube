@@ -4,13 +4,15 @@ import java.awt.Color;
 import java.io.IOException;
 
 import org.apache.pdfbox.exceptions.COSVisitorException;
-import org.apache.pdfbox.pdmodel.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
+import eu.greenlightning.hypercubepdf.border.HCPEmptyBorder;
 import eu.greenlightning.hypercubepdf.container.*;
-import eu.greenlightning.hypercubepdf.layout.*;
-import eu.greenlightning.hypercubepdf.page.*;
-import eu.greenlightning.hypercubepdf.text.*;
+import eu.greenlightning.hypercubepdf.layout.HCPFlowLayout;
+import eu.greenlightning.hypercubepdf.layout.HCPStretchLayout;
+import eu.greenlightning.hypercubepdf.text.HCPNormalText;
+import eu.greenlightning.hypercubepdf.text.HCPStyle;
 
 public class ContainerExample {
 
@@ -34,15 +36,15 @@ public class ContainerExample {
 
 		HCPElement horizontal = HCPContainers.getHorizontalSplit(a, b, c);
 		HCPElement vertical = HCPContainers.getVerticalSplit(10, a, b, c);
-		paintOnNewPage(document, "Split", horizontal, vertical);
+		Examples.paintOnNewPage(document, "Split", horizontal, vertical);
 
 		horizontal = HCPContainers.getHorizontalFlow(a, b, c);
 		vertical = HCPContainers.getVerticalFlow(10, a, b, c);
-		paintOnNewPage(document, "Flow", horizontal, vertical);
+		Examples.paintOnNewPage(document, "Flow", horizontal, vertical);
 
 		horizontal = HCPContainers.getHorizontalStretch(a, b, c);
 		vertical = HCPContainers.getVerticalStretch(10, a, b, c);
-		paintOnNewPage(document, "Stretch", horizontal, vertical);
+		Examples.paintOnNewPage(document, "Stretch", horizontal, vertical);
 	}
 
 	private static void demoBorderContainer(PDDocument document) throws IOException {
@@ -54,7 +56,7 @@ public class ContainerExample {
 
 		HCPElement border = HCPBorderContainer.builder().top(top).left(left).center(center).right(right)
 				.bottom(bottom).allSpacings(10).build();
-		paintOnNewPage(document, "Border", border);
+		Examples.paintOnNewPage(document, "Border", border);
 	}
 
 	private static void demoGridContainer(PDDocument document) throws IOException {
@@ -72,30 +74,15 @@ public class ContainerExample {
 		HCPStretchLayout horizontal = HCPStretchLayout.getInstance();
 		HCPFlowLayout vertical = HCPFlowLayout.getInstance();
 		HCPElement grid = new HCPGridContainer(horizontal, vertical, elements);
-		paintOnNewPage(document, "Grid", grid);
+		Examples.paintOnNewPage(document, "Grid", grid);
 	}
 
 	private static HCPElement createBox(String label, Color stroking, Color nonStroking) {
 		HCPElement background = new HCPArea(nonStroking, stroking);
 		HCPStyle style = new HCPStyle(PDType1Font.HELVETICA_BOLD, 24, stroking);
 		HCPElement text = new HCPNormalText(label, style);
-		text = HCPBorder.getHorizontalVerticalInstance(text, 20, 10);
+		text = HCPEmptyBorder.getHorizontalVerticalInstance(text, 20, 10);
 		return new HCPStack(background, text);
-	}
-
-	private static void paintOnNewPage(PDDocument document, String title, HCPElement left, HCPElement right)
-			throws IOException {
-		paintOnNewPage(document, title, HCPContainers.getHorizontalSplit(40, left, right));
-	}
-
-	private static void paintOnNewPage(PDDocument document, String title, HCPElement element)
-			throws IOException {
-		HCPStyle style = new HCPStyle(PDType1Font.HELVETICA_BOLD, 24);
-		HCPElement text = new HCPNormalText(title, style);
-		element = HCPBorderContainer.builder().top(text).topSpacing(30).center(element).build();
-		element = HCPBorder.getAllSidesInstance(element, 50);
-		HCPPage page = HCPPages.addLandscapePage(document, PDPage.PAGE_SIZE_A4);
-		page.paint(element);
 	}
 
 }

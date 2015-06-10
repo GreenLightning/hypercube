@@ -1,10 +1,12 @@
-package eu.greenlightning.hypercubepdf;
+package eu.greenlightning.hypercubepdf.border;
 
 import java.io.IOException;
 import java.util.Objects;
 
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
+
+import eu.greenlightning.hypercubepdf.HCPElement;
 
 /**
  * An {@link HCPElement} wrapper which adds an empty border of a fixed size around the element.
@@ -19,7 +21,7 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
  *
  * @author Green Lightning
  */
-public class HCPBorder implements HCPElement {
+public class HCPEmptyBorder implements HCPElement {
 
 	/**
 	 * Wraps the element with an invisible border.
@@ -28,8 +30,8 @@ public class HCPBorder implements HCPElement {
 	 * @return a wrapper for element
 	 * @throws NullPointerException if element is {@code null}
 	 */
-	public static HCPBorder getEmptyInstance(HCPElement element) {
-		return new HCPBorder(element, 0, 0, 0, 0);
+	public static HCPEmptyBorder getEmptyInstance(HCPElement element) {
+		return new HCPEmptyBorder(element, 0, 0, 0, 0);
 	}
 
 	/**
@@ -41,8 +43,8 @@ public class HCPBorder implements HCPElement {
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if top is {@literal < 0}
 	 */
-	public static HCPBorder getTopInstance(HCPElement element, float top) {
-		return new HCPBorder(element, top, 0, 0, 0);
+	public static HCPEmptyBorder getTopInstance(HCPElement element, float top) {
+		return new HCPEmptyBorder(element, top, 0, 0, 0);
 	}
 
 	/**
@@ -54,8 +56,8 @@ public class HCPBorder implements HCPElement {
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if right is {@literal < 0}
 	 */
-	public static HCPBorder getRightInstance(HCPElement element, float right) {
-		return new HCPBorder(element, 0, right, 0, 0);
+	public static HCPEmptyBorder getRightInstance(HCPElement element, float right) {
+		return new HCPEmptyBorder(element, 0, right, 0, 0);
 	}
 
 	/**
@@ -67,8 +69,8 @@ public class HCPBorder implements HCPElement {
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if bottom is {@literal < 0}
 	 */
-	public static HCPBorder getBottomInstance(HCPElement element, float bottom) {
-		return new HCPBorder(element, 0, 0, bottom, 0);
+	public static HCPEmptyBorder getBottomInstance(HCPElement element, float bottom) {
+		return new HCPEmptyBorder(element, 0, 0, bottom, 0);
 	}
 
 	/**
@@ -80,8 +82,8 @@ public class HCPBorder implements HCPElement {
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if left is {@literal < 0}
 	 */
-	public static HCPBorder getLeftInstance(HCPElement element, float left) {
-		return new HCPBorder(element, 0, 0, 0, left);
+	public static HCPEmptyBorder getLeftInstance(HCPElement element, float left) {
+		return new HCPEmptyBorder(element, 0, 0, 0, left);
 	}
 
 	/**
@@ -93,8 +95,8 @@ public class HCPBorder implements HCPElement {
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if size is {@literal < 0}
 	 */
-	public static HCPBorder getAllSidesInstance(HCPElement element, float size) {
-		return new HCPBorder(element, size, size, size, size);
+	public static HCPEmptyBorder getAllSidesInstance(HCPElement element, float size) {
+		return new HCPEmptyBorder(element, size, size, size, size);
 	}
 
 	/**
@@ -106,8 +108,8 @@ public class HCPBorder implements HCPElement {
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if horizontal is {@literal < 0}
 	 */
-	public static HCPBorder getHorizontalInstance(HCPElement element, float horizontal) {
-		return new HCPBorder(element, 0, horizontal, 0, horizontal);
+	public static HCPEmptyBorder getHorizontalInstance(HCPElement element, float horizontal) {
+		return new HCPEmptyBorder(element, 0, horizontal, 0, horizontal);
 	}
 
 	/**
@@ -119,8 +121,8 @@ public class HCPBorder implements HCPElement {
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if vertical is {@literal < 0}
 	 */
-	public static HCPBorder getVerticalInstance(HCPElement element, float vertical) {
-		return new HCPBorder(element, vertical, 0, vertical, 0);
+	public static HCPEmptyBorder getVerticalInstance(HCPElement element, float vertical) {
+		return new HCPEmptyBorder(element, vertical, 0, vertical, 0);
 	}
 
 	/**
@@ -134,8 +136,8 @@ public class HCPBorder implements HCPElement {
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if any size is {@literal < 0}
 	 */
-	public static HCPBorder getHorizontalVerticalInstance(HCPElement element, float horizontal, float vertical) {
-		return new HCPBorder(element, vertical, horizontal, vertical, horizontal);
+	public static HCPEmptyBorder getHorizontalVerticalInstance(HCPElement element, float horizontal, float vertical) {
+		return new HCPEmptyBorder(element, vertical, horizontal, vertical, horizontal);
 	}
 
 	/**
@@ -150,15 +152,15 @@ public class HCPBorder implements HCPElement {
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if any size is {@literal < 0}
 	 */
-	public static HCPBorder getTopRightBottomLeftInstance(HCPElement element, float top, float right, float bottom,
+	public static HCPEmptyBorder getTopRightBottomLeftInstance(HCPElement element, float top, float right, float bottom,
 		float left) {
-		return new HCPBorder(element, top, right, bottom, left);
+		return new HCPEmptyBorder(element, top, right, bottom, left);
 	}
 
 	private final HCPElement element;
 	private final float top, right, bottom, left;
 
-	private HCPBorder(HCPElement element, float top, float right, float bottom, float left) {
+	private HCPEmptyBorder(HCPElement element, float top, float right, float bottom, float left) {
 		this.element = Objects.requireNonNull(element, "Element must not be null.");
 		this.top = checkSize(top, "Top");
 		this.right = checkSize(right, "Right");

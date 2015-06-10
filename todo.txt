@@ -1,3 +1,2 @@
-- colored borders
 - documentation
 - examples
