@@ -1,7 +1,8 @@
 package eu.greenlightning.hypercubepdf.container;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Objects;
 
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
@@ -40,16 +41,17 @@ class HCPHorizontalContainer implements HCPElement {
 	@Override
 	public void paint(PDPageContentStream content, PDRectangle shape) throws IOException {
 		HCPLayoutSpace space = new HCPLayoutSpace(shape.getLowerLeftX(), shape.getUpperRightX());
-		HCPLayoutResult[] results = layout.apply(space, elements.getWidths());
+		HCPLayoutResults results = layout.apply(space, elements.getWidths());
 
 		PDRectangle elementShape = new PDRectangle();
 		elementShape.setLowerLeftY(shape.getLowerLeftY());
 		elementShape.setUpperRightY(shape.getUpperRightY());
 
-		for (int index = 0; index < results.length && index < elements.size(); index++) {
-			elementShape.setLowerLeftX(results[index].getLow());
-			elementShape.setUpperRightX(results[index].getHigh());
-			elements.get(index).paint(content, elementShape);
+		while (results.hasNext()) {
+			results.next();
+			elementShape.setLowerLeftX(results.getLow());
+			elementShape.setUpperRightX(results.getHigh());
+			elements.get(results.getIndex()).paint(content, elementShape);
 		}
 	}
 

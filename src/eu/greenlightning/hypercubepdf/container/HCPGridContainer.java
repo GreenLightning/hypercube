@@ -103,19 +103,23 @@ public class HCPGridContainer implements HCPElement {
 		PDRectangle elementShape = new PDRectangle();
 
 		HCPLayoutSpace verticalSpace = new HCPLayoutSpace(shape.getUpperRightY(), shape.getLowerLeftY());
-		HCPLayoutResult[] verticalResults = verticalLayout.apply(verticalSpace, getHeights());
+		HCPLayoutResults verticalResults = verticalLayout.apply(verticalSpace, getHeights());
 
 		HCPLayoutSpace horizontalSpace = new HCPLayoutSpace(shape.getLowerLeftX(), shape.getUpperRightX());
-		HCPLayoutResult[] horizontalResults = horizontalLayout.apply(horizontalSpace, getWidths());
+		HCPLayoutResults horizontalResults = horizontalLayout.apply(horizontalSpace, getWidths());
 
-		for (int v = 0; v < verticalResults.length && v < verticalCount; v++) {
-			elementShape.setLowerLeftY(verticalResults[v].getLow());
-			elementShape.setUpperRightY(verticalResults[v].getHigh());
-			HCPElement[] cells = elements[v];
-			for (int h = 0; h < horizontalResults.length && h < horizontalCount; h++) {
-				elementShape.setLowerLeftX(horizontalResults[h].getLow());
-				elementShape.setUpperRightX(horizontalResults[h].getHigh());
-				cells[h].paint(content, elementShape);
+		while (verticalResults.hasNext()) {
+			verticalResults.next();
+			elementShape.setLowerLeftY(verticalResults.getLow());
+			elementShape.setUpperRightY(verticalResults.getHigh());
+			HCPElement[] cells = elements[verticalResults.getIndex()];
+
+			horizontalResults.reset();
+			while (horizontalResults.hasNext()) {
+				horizontalResults.next();
+				elementShape.setLowerLeftX(horizontalResults.getLow());
+				elementShape.setUpperRightX(horizontalResults.getHigh());
+				cells[horizontalResults.getIndex()].paint(content, elementShape);
 			}
 		}
 	}

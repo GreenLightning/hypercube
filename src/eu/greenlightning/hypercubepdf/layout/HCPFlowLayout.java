@@ -1,7 +1,5 @@
 package eu.greenlightning.hypercubepdf.layout;
 
-import java.util.*;
-
 public class HCPFlowLayout extends HCPSpacedLayout {
 
 	private final static HCPFlowLayout NO_SPACING = new HCPFlowLayout(0);
@@ -24,21 +22,8 @@ public class HCPFlowLayout extends HCPSpacedLayout {
 	}
 
 	@Override
-	public HCPLayoutResult[] apply(HCPLayoutSpace space, float[] sizes) {
-		List<HCPLayoutResult> results = new ArrayList<>(sizes.length);
-		float totalSize = 0;
-		for (int i = 0; i < sizes.length; i++) {
-			float elementSize = sizes[i];
-			if (totalSize + elementSize >= space.getLength())
-				elementSize = space.getLength() - totalSize;
-			float a = space.getStart() + space.getDirection() * totalSize;
-			float b = space.getStart() + space.getDirection() * (totalSize + elementSize);
-			results.add(new HCPLayoutResult(a, b));
-			if (totalSize + elementSize + getSpacing() >= space.getLength())
-				break;
-			totalSize += elementSize + getSpacing();
-		}
-		return results.toArray(new HCPLayoutResult[results.size()]);
+	public HCPLayoutResults apply(HCPLayoutSpace space, float[] sizes) {
+		return new HCPFlowLayoutResults(space, sizes, getSpacing());
 	}
 
 }

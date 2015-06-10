@@ -22,18 +22,12 @@ public class HCPSplitLayout extends HCPSpacedLayout {
 	}
 
 	@Override
-	public HCPLayoutResult[] apply(HCPLayoutSpace space, float[] sizes) {
-		int count = sizes.length;
+	public HCPLayoutResults apply(HCPLayoutSpace space, float[] sizes) {
 		float totalSpacing = getTotalSpacing(sizes);
 		if (totalSpacing >= space.getLength())
-			return new HCPLayoutResult[0];
-		float size = (space.getLength() - totalSpacing) / count;
-		HCPLayoutResult[] results = new HCPLayoutResult[count];
-		for (int i = 0; i < count; i++) {
-			float start = space.getStart() + space.getDirection() * i * (size + getSpacing());
-			results[i] = new HCPLayoutResult(start, start + space.getDirection() * size);
-		}
-		return results;
+			return new HCPEmptyLayoutResults();
+		float elementSize = (space.getLength() - totalSpacing) / sizes.length;
+		return new HCPSplitLayoutResults(space, sizes.length, elementSize, getSpacing());
 	}
 
 }

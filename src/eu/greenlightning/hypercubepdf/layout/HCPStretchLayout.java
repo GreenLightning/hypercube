@@ -22,20 +22,12 @@ public class HCPStretchLayout extends HCPSpacedLayout {
 	}
 
 	@Override
-	public HCPLayoutResult[] apply(HCPLayoutSpace space, float[] sizes) {
-		int count = sizes.length;
+	public HCPLayoutResults apply(HCPLayoutSpace space, float[] sizes) {
 		float totalSpacing = getTotalSpacing(sizes);
 		if (totalSpacing >= space.getLength())
-			return new HCPLayoutResult[0];
-		float factor = (space.getLength() - totalSpacing) / getTotalSize(sizes);
-		HCPLayoutResult[] results = new HCPLayoutResult[count];
-		float position = space.getStart();
-		for (int i = 0; i < count; i++) {
-			float size = sizes[i] * space.getDirection() * factor;
-			results[i] = new HCPLayoutResult(position, position + size);
-			position += size + space.getDirection() * getSpacing();
-		}
-		return results;
+			return new HCPEmptyLayoutResults();
+		float stretchFactor = (space.getLength() - totalSpacing) / getTotalSize(sizes);
+		return new HCPStretchLayoutResults(space, sizes, stretchFactor, getSpacing());
 	}
 
 }
