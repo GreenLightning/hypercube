@@ -158,7 +158,7 @@ public class HCPAligned implements HCPElement {
 			elementShape.setLowerLeftX(parentShape.getLowerLeftX());
 			elementShape.setUpperRightX(parentShape.getUpperRightX());
 		} else {
-			horizontal.alignShapeWithParent(elementShape, parentShape);
+			horizontal.alignChildWithParent(elementShape, parentShape);
 		}
 	}
 
@@ -167,7 +167,7 @@ public class HCPAligned implements HCPElement {
 			elementShape.setLowerLeftY(parentShape.getLowerLeftY());
 			elementShape.setUpperRightY(parentShape.getUpperRightY());
 		} else {
-			vertical.alignShapeWithParent(elementShape, parentShape);
+			vertical.alignChildWithParent(elementShape, parentShape);
 		}
 	}
 

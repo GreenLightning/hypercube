@@ -14,7 +14,7 @@ enum HCPLineAlignment {
 			return start;
 		}
 	},
-	
+
 	/** The center of the child segment will be aligned with the center of the parent segment. */
 	MIDDLE {
 		@Override
@@ -22,7 +22,7 @@ enum HCPLineAlignment {
 			return (start + end - size) / 2;
 		}
 	},
-	
+
 	/** The end of the child segment will be aligned with the end of the parent segment. */
 	END {
 		@Override
@@ -38,6 +38,10 @@ enum HCPLineAlignment {
 	 * The {@code start} argument should define the smaller and the {@code end} argument the larger coordinate of the
 	 * parent segment. The {@code size} argument should define the length of the child segment (which should be
 	 * positive).
+	 * <p>
+	 * Note that, if the child segment is larger than the parent segment, although correctly aligned, some part(s) of it
+	 * will be outside of the parent segment. If this is undesired behavior, a size check should be performed before
+	 * calling this method.
 	 * <p>
 	 * If the arguments do not satisfy the given constraints the return value of this method is unspecified. Otherwise,
 	 * it returns the <i>start</i> (the smaller) coordinate of the aligned segment based on the origin of {@code start}

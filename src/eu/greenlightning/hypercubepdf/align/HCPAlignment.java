@@ -66,9 +66,9 @@ public enum HCPAlignment {
 		return verticalAlignment;
 	}
 
-	public void alignShapeWithParent(PDRectangle shape, PDRectangle parent) {
-		getHorizontalAlignment().alignShapeWithParent(shape, parent);
-		getVerticalAlignment().alignShapeWithParent(shape, parent);
+	public void alignChildWithParent(PDRectangle child, PDRectangle parent) {
+		getHorizontalAlignment().alignChildWithParent(child, parent);
+		getVerticalAlignment().alignChildWithParent(child, parent);
 	}
 
 }
