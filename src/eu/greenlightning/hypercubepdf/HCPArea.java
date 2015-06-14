@@ -11,7 +11,7 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
  * A filled area with a border. Both the filling of the background and the drawing of the border are optional operations
  * and a separate color can be configured for each one.
  * <p>
- * Furthermore, which parts of the border are drawn can be configured using {@link HCPAreaBorder}. However, the width of
+ * Furthermore, which parts of the border are drawn can be configured using {@link HCPBorderType}. However, the width of
  * the border is currently fixed to be 1 default use space unit. Also note that the border is drawn exactly on the edges
  * of the {@link PDRectangle} supplied to the {@link #paint(PDPageContentStream, PDRectangle)} method, meaning half a
  * unit of the border will be outside the boundary and the other half will be inside the boundary. This also means that
@@ -31,7 +31,7 @@ public class HCPArea implements HCPElement {
 
 	private final Color contentColor;
 	private final Color borderColor;
-	private final HCPAreaBorder border;
+	private final HCPBorderType border;
 
 	/**
 	 * Creates an {@link HCPArea} with no border.
@@ -44,7 +44,7 @@ public class HCPArea implements HCPElement {
 	 * @param contentColor the color to use for filling the background or {@code null}
 	 */
 	public HCPArea(Color contentColor) {
-		this(contentColor, null, HCPAreaBorder.NO_BORDER);
+		this(contentColor, null, HCPBorderType.NO_BORDER);
 	}
 
 	/**
@@ -59,7 +59,7 @@ public class HCPArea implements HCPElement {
 	 * @param borderColor the color to use for drawing the border or {@code null}
 	 */
 	public HCPArea(Color contentColor, Color borderColor) {
-		this(contentColor, borderColor, HCPAreaBorder.FULL_BORDER);
+		this(contentColor, borderColor, HCPBorderType.FULL_BORDER);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class HCPArea implements HCPElement {
 	 * If {@code contentColor} is {@code null} the background will not be filled.
 	 * <p>
 	 * Note that for the border to be drawn, {@code borderColor} must not be {@code null} and {@code border} must not be
-	 * {@link HCPAreaBorder#NO_BORDER}.
+	 * {@link HCPBorderType#NO_BORDER}.
 	 * <p>
 	 * Note that the element will be invisible if {@code contentColor} is {@code null} and the border is not drawn.
 	 * 
@@ -76,9 +76,9 @@ public class HCPArea implements HCPElement {
 	 * @param borderColor the color used for drawing the border or {@code null}
 	 * @param border the border type to use; not {@code null}
 	 * @throws NullPointerException if border is {@code null}
-	 * @see HCPAreaBorder
+	 * @see HCPBorderType
 	 */
-	public HCPArea(Color contentColor, Color borderColor, HCPAreaBorder border) {
+	public HCPArea(Color contentColor, Color borderColor, HCPBorderType border) {
 		this.borderColor = borderColor;
 		this.contentColor = contentColor;
 		this.border = Objects.requireNonNull(border, "Border must not be null. Maybe use NO_BORDER?");
@@ -122,7 +122,7 @@ public class HCPArea implements HCPElement {
 	}
 
 	private void paintBorder(PDPageContentStream content, PDRectangle shape) throws IOException {
-		if (borderColor != null && border != HCPAreaBorder.NO_BORDER) {
+		if (borderColor != null && border != HCPBorderType.NO_BORDER) {
 			content.setStrokingColor(borderColor);
 			content.setLineWidth(LINE_WIDTH);
 			addBorder(content, shape);
@@ -136,7 +136,7 @@ public class HCPArea implements HCPElement {
 		float lowerY = shape.getLowerLeftY();
 		float upperY = shape.getUpperRightY();
 
-		if (border == HCPAreaBorder.FULL_BORDER) {
+		if (border == HCPBorderType.FULL_BORDER) {
 			content.addRect(leftX, lowerY, shape.getWidth(), shape.getHeight());
 			return;
 		}
