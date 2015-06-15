@@ -8,74 +8,191 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 
 import eu.greenlightning.hypercubepdf.HCPElement;
 
+/**
+ * Paints up to five {@link HCPElement}s, one for the center and four for each side. Each element is optional and must
+ * not be provided.
+ * <p>
+ * When all elements are painted, the left, center and right element form a row in the middle, while the top element is
+ * painted above and the bottom element is painted below all three of them. If the opposite arrangement is wanted (the
+ * top, center and bottom element form a column in the center, while the left element is painted to the left and the
+ * right element is painted to the right of all three of them), then two {@link HCPBorderContainer}s must be nested. The
+ * inner container should contain the top, center and bottom elements and the outer container contains the left and
+ * right elements and the inner container in the center position.
+ * <p>
+ * If provided, the top and bottom elements will be asked for their preferred height and the left and right elements for
+ * their preferred width. The center element will take all the remaining space in the center. The elements will then be
+ * painted in the following order as long as there is still space available to paint them: top, bottom, left, right,
+ * center.
+ * <p>
+ * An individual spacing value can be set for each of the four side elements, which introduce spacing between the
+ * element and the center element.
+ * <p>
+ * This class is immutable.
+ * 
+ * @author Green Lightning
+ */
 public class HCPBorderContainer implements HCPElement {
 
+	/**
+	 * Creates a new builder.
+	 * 
+	 * @return a new builder for a {@link HCPBorderContainer}
+	 */
 	public static Builder builder() {
 		return new Builder();
 	}
 
+	/**
+	 * Mutable class used to construct {@link HCPBorderContainer} instances.
+	 *
+	 * @author Green Lightning
+	 */
 	public static final class Builder {
 
 		private HCPElement top, bottom, left, right, center;
 		private float topSpacing, bottomSpacing, leftSpacing, rightSpacing;
 
+		/**
+		 * Sets the top element, overwriting previous calls to this method. If {@code null}, removes the top element in
+		 * case it was set.
+		 * 
+		 * @param top may be {@code null}
+		 * @return this builder for chaining
+		 */
 		public Builder top(HCPElement top) {
 			this.top = top;
 			return this;
 		}
 
+		/**
+		 * Sets the bottom element, overwriting previous calls to this method. If {@code null}, removes the bottom
+		 * element in case it was set.
+		 * 
+		 * @param bottom may be {@code null}
+		 * @return this builder for chaining
+		 */
 		public Builder bottom(HCPElement bottom) {
 			this.bottom = bottom;
 			return this;
 		}
 
+		/**
+		 * Sets the left element, overwriting previous calls to this method. If {@code null}, removes the left element
+		 * in case it was set.
+		 * 
+		 * @param left may be {@code null}
+		 * @return this builder for chaining
+		 */
 		public Builder left(HCPElement left) {
 			this.left = left;
 			return this;
 		}
 
+		/**
+		 * Sets the right element, overwriting previous calls to this method. If {@code null}, removes the right element
+		 * in case it was set.
+		 * 
+		 * @param right may be {@code null}
+		 * @return this builder for chaining
+		 */
 		public Builder right(HCPElement right) {
 			this.right = right;
 			return this;
 		}
 
+		/**
+		 * Sets the center element, overwriting previous calls to this method. If {@code null}, removes the center
+		 * element in case it was set.
+		 * 
+		 * @param center may be {@code null}
+		 * @return this builder for chaining
+		 */
 		public Builder center(HCPElement center) {
 			this.center = center;
 			return this;
 		}
 
+		/**
+		 * Sets the top spacing, replacing any previously set value. If less than zero the {@linkplain #build()} method
+		 * will throw an {@linkplain IllegalArgumentException}.
+		 * 
+		 * @param topSpacing must be {@literal >= 0}
+		 * @return this builder for chaining
+		 */
 		public Builder topSpacing(float topSpacing) {
 			this.topSpacing = topSpacing;
 			return this;
 		}
 
+		/**
+		 * Sets the bottom spacing, replacing any previously set value. If less than zero the {@linkplain #build()}
+		 * method will throw an {@linkplain IllegalArgumentException}.
+		 * 
+		 * @param bottomSpacing must be {@literal >= 0}
+		 * @return this builder for chaining
+		 */
 		public Builder bottomSpacing(float bottomSpacing) {
 			this.bottomSpacing = bottomSpacing;
 			return this;
 		}
 
+		/**
+		 * Sets the left spacing, replacing any previously set value. If less than zero the {@linkplain #build()} method
+		 * will throw an {@linkplain IllegalArgumentException}.
+		 * 
+		 * @param leftSpacing must be {@literal >= 0}
+		 * @return this builder for chaining
+		 */
 		public Builder leftSpacing(float leftSpacing) {
 			this.leftSpacing = leftSpacing;
 			return this;
 		}
 
+		/**
+		 * Sets the right spacing, replacing any previously set value. If less than zero the {@linkplain #build()}
+		 * method will throw an {@linkplain IllegalArgumentException}.
+		 * 
+		 * @param rightSpacing must be {@literal >= 0}
+		 * @return this builder for chaining
+		 */
 		public Builder rightSpacing(float rightSpacing) {
 			this.rightSpacing = rightSpacing;
 			return this;
 		}
 
+		/**
+		 * Sets the top and bottom spacing, replacing any previously set value. If less than zero the
+		 * {@linkplain #build()} method will throw an {@linkplain IllegalArgumentException}.
+		 * 
+		 * @param horizontalSpacing must be {@literal >= 0}
+		 * @return this builder for chaining
+		 */
 		public Builder horizontalSpacing(float spacing) {
 			this.topSpacing = spacing;
 			this.bottomSpacing = spacing;
 			return this;
 		}
 
+		/**
+		 * Sets the left and right spacing, replacing any previously set value. If less than zero the
+		 * {@linkplain #build()} method will throw an {@linkplain IllegalArgumentException}.
+		 * 
+		 * @param verticalSpacing must be {@literal >= 0}
+		 * @return this builder for chaining
+		 */
 		public Builder verticalSpacing(float spacing) {
 			this.leftSpacing = spacing;
 			this.rightSpacing = spacing;
 			return this;
 		}
 
+		/**
+		 * Sets the top, bottom, left and right spacing, replacing any previously set value. If less than zero the
+		 * {@linkplain #build()} method will throw an {@linkplain IllegalArgumentException}.
+		 * 
+		 * @param spacing must be {@literal >= 0}
+		 * @return this builder for chaining
+		 */
 		public Builder allSpacings(float spacing) {
 			this.topSpacing = spacing;
 			this.bottomSpacing = spacing;
@@ -84,9 +201,15 @@ public class HCPBorderContainer implements HCPElement {
 			return this;
 		}
 
+		/**
+		 * Creates the {@link HCPBorderContainer}.
+		 * 
+		 * @return a new {@link HCPBorderContainer} for the elements and spacing values set on this builder
+		 * @throws IllegalArgumentException if any spacing value is {@literal < 0}
+		 */
 		public HCPBorderContainer build() {
-			return new HCPBorderContainer(top, bottom, left, right, center, topSpacing, bottomSpacing,
-					leftSpacing, rightSpacing);
+			return new HCPBorderContainer(top, bottom, left, right, center, topSpacing, bottomSpacing, leftSpacing,
+				rightSpacing);
 		}
 
 	}
@@ -98,8 +221,8 @@ public class HCPBorderContainer implements HCPElement {
 	private final PDRectangle elementShape = new PDRectangle();
 	private float leftPos, rightPos, topPos, bottomPos;
 
-	private HCPBorderContainer(HCPElement top, HCPElement bottom, HCPElement left, HCPElement right,
-			HCPElement center, float topSpacing, float bottomSpacing, float leftSpacing, float rightSpacing) {
+	private HCPBorderContainer(HCPElement top, HCPElement bottom, HCPElement left, HCPElement right, HCPElement center,
+		float topSpacing, float bottomSpacing, float leftSpacing, float rightSpacing) {
 		this.top = Optional.ofNullable(top);
 		this.bottom = Optional.ofNullable(bottom);
 		this.left = Optional.ofNullable(left);
@@ -113,8 +236,8 @@ public class HCPBorderContainer implements HCPElement {
 
 	private float checkSpacing(float spacing, String name) {
 		if (spacing < 0)
-			throw new IllegalArgumentException(name + " spacing must be equal to or greater than zero,"
-					+ " but was " + spacing + ".");
+			throw new IllegalArgumentException(name + " spacing must be equal to or greater than zero," + " but was "
+				+ spacing + ".");
 		return spacing;
 	}
 
