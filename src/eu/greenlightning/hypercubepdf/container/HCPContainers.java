@@ -5,6 +5,23 @@ import java.util.Collection;
 import eu.greenlightning.hypercubepdf.HCPElement;
 import eu.greenlightning.hypercubepdf.layout.*;
 
+/**
+ * Utility class for creating standard containers. Standard containers paint a group of {@link HCPElement}s
+ * sequentially, applying a {@link HCPLayout} in one direction.
+ * <p>
+ * The elements are painted in the order in which they were provided while creating the container, as long as enough
+ * space is available.
+ * <p>
+ * Horizontal containers paint their elements from left to right and vertical containers paint from top to bottom.
+ * Right-to-left and bottom-to-top painting is not supported at the moment.
+ * <p>
+ * The width of the elements in horizontal containers depends on the layout, however the elements are always painted
+ * using the height of the container. For vertical containers the opposite statement is true, i.&nbsp;e. the height of
+ * the elements in vertical containers depends on the layout, however the elements are always painted using the width of
+ * the container.
+ *
+ * @author Green Lightning
+ */
 public final class HCPContainers {
 
 	public static HCPElement getHorizontalFlow(Collection<? extends HCPElement> elements) {
@@ -103,8 +120,7 @@ public final class HCPContainers {
 		return getVerticalContainer(HCPStretchLayout.getInstance(spacing), elements);
 	}
 
-	public static HCPElement getHorizontalContainer(HCPLayout layout,
-			Collection<? extends HCPElement> elements) {
+	public static HCPElement getHorizontalContainer(HCPLayout layout, Collection<? extends HCPElement> elements) {
 		return new HCPHorizontalContainer(layout, elements);
 	}
 
