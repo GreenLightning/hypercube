@@ -7,8 +7,20 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 
 import eu.greenlightning.hypercubepdf.HCPElement;
+import eu.greenlightning.hypercubepdf.HCPEmpty;
 import eu.greenlightning.hypercubepdf.layout.*;
 
+/**
+ * Paints a 2-dimensional grid of {@link HCPElement}s. Rows and columns are laid out independently and different
+ * {@link HCPLayout}s can be used for rows and columns.The maximum width of all elements in a column is used as the
+ * width of the column. The maximum height of all elements in a row is used as the height of the row.
+ * <p>
+ * The elements are painted in rows from left to right and rows are painted from top to bottom.
+ * <p>
+ * This class is immutable.
+ * 
+ * @author Green Lightning
+ */
 public class HCPGridContainer implements HCPElement {
 
 	private final HCPLayout horizontalLayout;
@@ -17,9 +29,47 @@ public class HCPGridContainer implements HCPElement {
 	private final int verticalCount;
 	private final HCPElement[][] elements;
 
+	/**
+	 * Creates an {@link HCPGridContainer} with a single {@link HCPLayout} for rows and columns.
+	 * <p>
+	 * Elements is an array of row arrays. The first array corresponds to the top-most row and the last array to the
+	 * bottom-most row. Each row array contains the elements of the row from left to right.
+	 * <p>
+	 * An empty elements array as well as an elements array containing only empty row arrays are allowed, however the
+	 * resulting container behaves like an empty element (see {@link HCPEmpty}).
+	 * 
+	 * @param layout not {@code null}
+	 * @param elements not {@code null}; all row arrays must not be {@code null}, must have the same length and must not
+	 *            contain {@code null} elements themselves
+	 * @throws NullPointerException if layout or elements is {@code null}
+	 * @throws NullPointerException if elements contains a {@code null} row array or a row array contains a {@code null}
+	 *             element
+	 * @throws IllegalArgumentException if a row array has the wrong length
+	 */
+	public HCPGridContainer(HCPLayout layout, HCPElement[][] elements) {
+		this(layout, layout, elements);
+	}
+
+	/**
+	 * Creates an {@link HCPGridContainer} with separate horizontal and vertical layouts.
+	 * <p>
+	 * Elements is an array of row arrays. The first array corresponds to the top-most row and the last array to the
+	 * bottom-most row. Each row array contains the elements of the row from left to right.
+	 * <p>
+	 * An empty elements array as well as an elements array containing only empty row arrays are allowed, however the
+	 * resulting container behaves like an empty element (see {@link HCPEmpty}).
+	 * 
+	 * @param horizontalLayout used to lay out columns; not {@code null}
+	 * @param verticalLayout used to lay out rows; not {@code null}
+	 * @param elements not {@code null}; all row arrays must not be {@code null}, must have the same length and must not
+	 *            contain {@code null} elements themselves
+	 * @throws NullPointerException if horizontalLayout, verticalLayout or elements is {@code null}
+	 * @throws NullPointerException if elements contains a {@code null} row array or a row array contains a {@code null}
+	 *             element
+	 * @throws IllegalArgumentException if a row array has the wrong length
+	 */
 	public HCPGridContainer(HCPLayout horizontalLayout, HCPLayout verticalLayout, HCPElement[][] elements) {
-		this.horizontalLayout = Objects.requireNonNull(horizontalLayout,
-				"Horizontal layout must not be null.");
+		this.horizontalLayout = Objects.requireNonNull(horizontalLayout, "Horizontal layout must not be null.");
 		this.verticalLayout = Objects.requireNonNull(verticalLayout, "Vertical layout must not be null.");
 
 		this.elements = Objects.requireNonNull(elements, "Elements must not be null.").clone();
@@ -97,7 +147,7 @@ public class HCPGridContainer implements HCPElement {
 			height = Math.max(height, elements[v][h].getHeight());
 		return height;
 	}
-	
+
 	@Override
 	public void paint(PDPageContentStream content, PDRectangle shape) throws IOException {
 		PDRectangle elementShape = new PDRectangle();
