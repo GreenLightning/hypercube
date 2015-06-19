@@ -25,7 +25,7 @@ public class HCPStretchLayout extends HCPSpacedLayout {
 	public HCPLayoutResults apply(HCPLayoutSpace space, float[] sizes) {
 		float totalSpacing = getTotalSpacing(sizes);
 		if (totalSpacing >= space.getLength())
-			return new HCPEmptyLayoutResults();
+			return HCPEmptyLayoutResults.INSTANCE;
 		float stretchFactor = (space.getLength() - totalSpacing) / getTotalSize(sizes);
 		return new HCPStretchLayoutResults(space, sizes, stretchFactor, getSpacing());
 	}

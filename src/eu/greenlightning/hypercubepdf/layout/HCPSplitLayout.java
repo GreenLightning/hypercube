@@ -25,7 +25,7 @@ public class HCPSplitLayout extends HCPSpacedLayout {
 	public HCPLayoutResults apply(HCPLayoutSpace space, float[] sizes) {
 		float totalSpacing = getTotalSpacing(sizes);
 		if (totalSpacing >= space.getLength())
-			return new HCPEmptyLayoutResults();
+			return HCPEmptyLayoutResults.INSTANCE;
 		float elementSize = (space.getLength() - totalSpacing) / sizes.length;
 		return new HCPSplitLayoutResults(space, sizes.length, elementSize, getSpacing());
 	}

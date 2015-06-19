@@ -1,6 +1,14 @@
 package eu.greenlightning.hypercubepdf.layout;
 
-public class HCPEmptyLayoutResults implements HCPLayoutResults {
+/**
+ * An empty {@link HCPLayoutResults}. Can be returned by {@link HCPLayout} if there are no results.
+ * 
+ * @author Green Lightning
+ */
+public enum HCPEmptyLayoutResults implements HCPLayoutResults {
+
+	/** The only instance of this class. Avoids unnecessary object creation. */
+	INSTANCE;
 
 	@Override
 	public boolean hasNext() {
