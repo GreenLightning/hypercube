@@ -24,114 +24,432 @@ import eu.greenlightning.hypercubepdf.layout.*;
  */
 public final class HCPContainers {
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>flow</i> layout from a <i>collection</i> of elements. The
+	 * layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPFlowLayout
+	 */
 	public static HCPElement getHorizontalFlow(Collection<? extends HCPElement> elements) {
 		return getHorizontalContainer(HCPFlowLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>flow</i> layout from an <i>array</i> or from a <i>varargs</i>
+	 * list of elements. The layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPFlowLayout
+	 */
 	public static HCPElement getHorizontalFlow(HCPElement... elements) {
 		return getHorizontalContainer(HCPFlowLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>flow</i> layout from a <i>collection</i> of elements. The layout
+	 * will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPFlowLayout
+	 */
 	public static HCPElement getVerticalFlow(Collection<? extends HCPElement> elements) {
 		return getVerticalContainer(HCPFlowLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>flow</i> layout from an <i>array</i> or from a <i>varargs</i>
+	 * list of elements. The layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPFlowLayout
+	 */
 	public static HCPElement getVerticalFlow(HCPElement... elements) {
 		return getVerticalContainer(HCPFlowLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>flow</i> layout with the specified <i>spacing</i> from a
+	 * <i>collection</i> of elements. The layout will create a spacing of the specified size between any two adjacent
+	 * elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPFlowLayout
+	 */
 	public static HCPElement getHorizontalFlow(float spacing, Collection<? extends HCPElement> elements) {
 		return getHorizontalContainer(HCPFlowLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>flow</i> layout with the specified <i>spacing</i> from an
+	 * <i>array</i> or from a <i>varargs</i> list of elements. The layout will create a spacing of the specified size
+	 * between any two adjacent elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPFlowLayout
+	 */
 	public static HCPElement getHorizontalFlow(float spacing, HCPElement... elements) {
 		return getHorizontalContainer(HCPFlowLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>flow</i> layout with the specified <i>spacing</i> from a
+	 * <i>collection</i> of elements. The layout will create a spacing of the specified size between any two adjacent
+	 * elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPFlowLayout
+	 */
 	public static HCPElement getVerticalFlow(float spacing, Collection<? extends HCPElement> elements) {
 		return getVerticalContainer(HCPFlowLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>flow</i> layout with the specified <i>spacing</i> from an
+	 * <i>array</i> or from a <i>varargs</i> list of elements. The layout will create a spacing of the specified size
+	 * between any two adjacent elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPFlowLayout
+	 */
 	public static HCPElement getVerticalFlow(float spacing, HCPElement... elements) {
 		return getVerticalContainer(HCPFlowLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>split</i> layout from a <i>collection</i> of elements. The
+	 * layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPSplitLayout
+	 */
 	public static HCPElement getHorizontalSplit(Collection<? extends HCPElement> elements) {
 		return getHorizontalContainer(HCPSplitLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>split</i> layout from an <i>array</i> or from a <i>varargs</i>
+	 * list of elements. The layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPSplitLayout
+	 */
 	public static HCPElement getHorizontalSplit(HCPElement... elements) {
 		return getHorizontalContainer(HCPSplitLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>split</i> layout from a <i>collection</i> of elements. The
+	 * layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPSplitLayout
+	 */
 	public static HCPElement getVerticalSplit(Collection<? extends HCPElement> elements) {
 		return getVerticalContainer(HCPSplitLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>split</i> layout from an <i>array</i> or from a <i>varargs</i>
+	 * list of elements. The layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPSplitLayout
+	 */
 	public static HCPElement getVerticalSplit(HCPElement... elements) {
 		return getVerticalContainer(HCPSplitLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>split</i> layout with the specified <i>spacing</i> from a
+	 * <i>collection</i> of elements. The layout will create a spacing of the specified size between any two adjacent
+	 * elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPSplitLayout
+	 */
 	public static HCPElement getHorizontalSplit(float spacing, Collection<? extends HCPElement> elements) {
 		return getHorizontalContainer(HCPSplitLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>split</i> layout with the specified <i>spacing</i> from an
+	 * <i>array</i> or from a <i>varargs</i> list of elements. The layout will create a spacing of the specified size
+	 * between any two adjacent elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPSplitLayout
+	 */
 	public static HCPElement getHorizontalSplit(float spacing, HCPElement... elements) {
 		return getHorizontalContainer(HCPSplitLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>split</i> layout with the specified <i>spacing</i> from a
+	 * <i>collection</i> of elements. The layout will create a spacing of the specified size between any two adjacent
+	 * elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPSplitLayout
+	 */
 	public static HCPElement getVerticalSplit(float spacing, Collection<? extends HCPElement> elements) {
 		return getVerticalContainer(HCPSplitLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>split</i> layout with the specified <i>spacing</i> from an
+	 * <i>array</i> or from a <i>varargs</i> list of elements. The layout will create a spacing of the specified size
+	 * between any two adjacent elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPSplitLayout
+	 */
 	public static HCPElement getVerticalSplit(float spacing, HCPElement... elements) {
 		return getVerticalContainer(HCPSplitLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>stretch</i> layout from a <i>collection</i> of elements. The
+	 * layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPStretchLayout
+	 */
 	public static HCPElement getHorizontalStretch(Collection<? extends HCPElement> elements) {
 		return getHorizontalContainer(HCPStretchLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>stretch</i> layout from an <i>array</i> or from a
+	 * <i>varargs</i> list of elements. The layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPStretchLayout
+	 */
 	public static HCPElement getHorizontalStretch(HCPElement... elements) {
 		return getHorizontalContainer(HCPStretchLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>stretch</i> layout from a <i>collection</i> of elements. The
+	 * layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPStretchLayout
+	 */
 	public static HCPElement getVerticalStretch(Collection<? extends HCPElement> elements) {
 		return getVerticalContainer(HCPStretchLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>stretch</i> layout from an <i>array</i> or from a <i>varargs</i>
+	 * list of elements. The layout will not create gaps between the elements.
+	 * 
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPStretchLayout
+	 */
 	public static HCPElement getVerticalStretch(HCPElement... elements) {
 		return getVerticalContainer(HCPStretchLayout.getInstance(), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>stretch</i> layout with the specified <i>spacing</i> from a
+	 * <i>collection</i> of elements. The layout will create a spacing of the specified size between any two adjacent
+	 * elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPStretchLayout
+	 */
 	public static HCPElement getHorizontalStretch(float spacing, Collection<? extends HCPElement> elements) {
 		return getHorizontalContainer(HCPStretchLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the <i>stretch</i> layout with the specified <i>spacing</i> from an
+	 * <i>array</i> or from a <i>varargs</i> list of elements. The layout will create a spacing of the specified size
+	 * between any two adjacent elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPStretchLayout
+	 */
 	public static HCPElement getHorizontalStretch(float spacing, HCPElement... elements) {
 		return getHorizontalContainer(HCPStretchLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>stretch</i> layout with the specified <i>spacing</i> from a
+	 * <i>collection</i> of elements. The layout will create a spacing of the specified size between any two adjacent
+	 * elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPStretchLayout
+	 */
 	public static HCPElement getVerticalStretch(float spacing, Collection<? extends HCPElement> elements) {
 		return getVerticalContainer(HCPStretchLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the <i>stretch</i> layout with the specified <i>spacing</i> from an
+	 * <i>array</i> or from a <i>varargs</i> list of elements. The layout will create a spacing of the specified size
+	 * between any two adjacent elements.
+	 * 
+	 * @param spacing must be {@literal >= 0}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws IllegalArgumentException if spacing is {@literal < 0}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 * @see HCPStretchLayout
+	 */
 	public static HCPElement getVerticalStretch(float spacing, HCPElement... elements) {
 		return getVerticalContainer(HCPStretchLayout.getInstance(spacing), elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the specified layout from a <i>collection</i> of elements.
+	 * 
+	 * @param layout not {@code null}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws NullPointerException if layout is {@code null}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 */
 	public static HCPElement getHorizontalContainer(HCPLayout layout, Collection<? extends HCPElement> elements) {
 		return new HCPHorizontalContainer(layout, elements);
 	}
 
+	/**
+	 * Creates a <i>horizontal</i> container using the specified layout from an <i>array</i> or from a <i>varargs</i>
+	 * list of elements.
+	 * 
+	 * @param layout not {@code null}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the horizontal container
+	 * @throws NullPointerException if layout is {@code null}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 */
 	public static HCPElement getHorizontalContainer(HCPLayout layout, HCPElement... elements) {
 		return new HCPHorizontalContainer(layout, elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the specified layout from a <i>collection</i> of elements.
+	 * 
+	 * @param layout not {@code null}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws NullPointerException if layout is {@code null}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 */
 	public static HCPElement getVerticalContainer(HCPLayout layout, Collection<? extends HCPElement> elements) {
 		return new HCPVerticalContainer(layout, elements);
 	}
 
+	/**
+	 * Creates a <i>vertical</i> container using the specified layout from an <i>array</i> or from a <i>varargs</i> list
+	 * of elements.
+	 * 
+	 * @param layout not {@code null}
+	 * @param elements not {@code null}; must not contain {@code null}
+	 * @return the vertical container
+	 * @throws NullPointerException if layout is {@code null}
+	 * @throws NullPointerException if elements is {@code null}
+	 * @throws IllegalArgumentException if elements contains {@code null}
+	 */
 	public static HCPElement getVerticalContainer(HCPLayout layout, HCPElement... elements) {
 		return new HCPVerticalContainer(layout, elements);
 	}
