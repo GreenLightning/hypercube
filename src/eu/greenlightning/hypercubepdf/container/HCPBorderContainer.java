@@ -164,7 +164,7 @@ public class HCPBorderContainer implements HCPElement {
 		 * Sets the top and bottom spacing, replacing any previously set value. If less than zero the
 		 * {@linkplain #build()} method will throw an {@linkplain IllegalArgumentException}.
 		 * 
-		 * @param horizontalSpacing must be {@literal >= 0}
+		 * @param spacing must be {@literal >= 0}
 		 * @return this builder for chaining
 		 */
 		public Builder horizontalSpacing(float spacing) {
@@ -177,7 +177,7 @@ public class HCPBorderContainer implements HCPElement {
 		 * Sets the left and right spacing, replacing any previously set value. If less than zero the
 		 * {@linkplain #build()} method will throw an {@linkplain IllegalArgumentException}.
 		 * 
-		 * @param verticalSpacing must be {@literal >= 0}
+		 * @param spacing must be {@literal >= 0}
 		 * @return this builder for chaining
 		 */
 		public Builder verticalSpacing(float spacing) {
