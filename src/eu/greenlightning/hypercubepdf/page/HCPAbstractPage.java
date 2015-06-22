@@ -26,9 +26,9 @@ abstract class HCPAbstractPage implements HCPPage {
 	}
 
 	public HCPAbstractPage(PDDocument document, PDRectangle size) {
-		this(document, new PDPage(size));
+		this(document, new PDPage(Objects.requireNonNull(size, "Size must not be null.")));
 	}
-	
+
 	@Override
 	public PDPage asPDPage() {
 		return page;
