@@ -4,8 +4,22 @@ import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 
+/**
+ * A text element which paints a single line of text rotated by 90° counterclockwise.
+ * <p>
+ * This class is immutable.
+ * 
+ * @author Green Lightning
+ */
 public class HCPSideText extends HCPAbstractText {
 
+	/**
+	 * Constructs a {@link HCPSideText} from a {@link String} and an {@link HCPStyle}.
+	 * 
+	 * @param text not {@code null}; line breaks are ignored
+	 * @param style not {@code null}
+	 * @throws NullPointerException if text or style is {@code null}
+	 */
 	public HCPSideText(String text, HCPStyle style) {
 		super(text, style);
 	}
