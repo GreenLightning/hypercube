@@ -4,8 +4,22 @@ import java.io.IOException;
 
 import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 
+/**
+ * A simple text element, which paints a single line of text.
+ * <p>
+ * This class is immutable.
+ * 
+ * @author Green Lightning
+ */
 public class HCPNormalText extends HCPAbstractText {
 	
+	/**
+	 * Constructs a {@link HCPNormalText} from a {@link String} and an {@link HCPStyle}.
+	 * 
+	 * @param text not {@code null}; line breaks are ignored
+	 * @param style not {@code null}
+	 * @throws NullPointerException if text or style is {@code null}
+	 */
 	public HCPNormalText(String text, HCPStyle style) {
 		super(text, style);
 	}
