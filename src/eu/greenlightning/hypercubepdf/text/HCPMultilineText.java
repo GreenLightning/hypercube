@@ -8,6 +8,20 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 
 import eu.greenlightning.hypercubepdf.align.HCPHorizontalAlignment;
 
+/**
+ * A text element which handles line breaks.
+ * <p>
+ * Additionally, the spacing between the lines can be configured using the line spacing parameter. The line spacing is
+ * measured in 'line heights', i.&nbsp;e. 1 means each line is directly below the other and 2 means that between two
+ * consecutive lines is a gap with the height of one line.
+ * <p>
+ * The alignment of the individual lines can also be configured. Note however, that the (imaginary) rectangle
+ * surrounding all lines is always centered inside the text element.
+ * <p>
+ * This class is immutable.
+ *
+ * @author Green Lightning
+ */
 public class HCPMultilineText extends HCPAbstractText {
 
 	private static final float DEFAULT_LINE_SPACING = 1.2f;
@@ -17,18 +31,61 @@ public class HCPMultilineText extends HCPAbstractText {
 	private final float lineSpacing;
 	private final HCPHorizontalAlignment alignment;
 
+	/**
+	 * Creates an {@link HCPMultilineText} instance with the specified text and style and the default line spacing of
+	 * 1.2 lines, which aligns the text on the left.
+	 * 
+	 * @param text not {@code null}
+	 * @param style not {@code null}
+	 * @throws NullPointerException if text or style is {@code null}
+	 */
 	public HCPMultilineText(String text, HCPStyle style) {
 		this(text, style, DEFAULT_LINE_SPACING, DEFAULT_ALIGNMENT);
 	}
 
+	/**
+	 * Creates an {@link HCPMultilineText} instance with the specified text, style and line spacing, which aligns the
+	 * text on the left.
+	 * <p>
+	 * The line spacing is measured in 'line heights', i.&nbsp;e. 1 means each line is directly below the other and 2
+	 * means that between two consecutive lines is a gap with the height of one line.
+	 * 
+	 * @param text not {@code null}
+	 * @param style not {@code null}
+	 * @param lineSpacing must be {@literal >= 1}
+	 * @throws NullPointerException if text or style is {@code null}
+	 * @throws IllegalArgumentException if lineSpacing is {@literal < 1}
+	 */
 	public HCPMultilineText(String text, HCPStyle style, float lineSpacing) {
 		this(text, style, lineSpacing, DEFAULT_ALIGNMENT);
 	}
 
+	/**
+	 * Creates an {@link HCPMultilineText} instance with the specified text, style and text alignment and the default
+	 * line spacing of 1.2 lines.
+	 * 
+	 * @param text not {@code null}
+	 * @param style not {@code null}
+	 * @param alignment not {@code null}
+	 * @throws NullPointerException if text, style or alignment is {@code null}
+	 */
 	public HCPMultilineText(String text, HCPStyle style, HCPHorizontalAlignment alignment) {
 		this(text, style, DEFAULT_LINE_SPACING, alignment);
 	}
 
+	/**
+	 * Creates an {@link HCPMultilineText} instance with the specified text, style, line spacing and text alignment.
+	 * <p>
+	 * The line spacing is measured in 'line heights', i.&nbsp;e. 1 means each line is directly below the other and 2
+	 * means that between two consecutive lines is a gap with the height of one line.
+	 * 
+	 * @param text not {@code null}
+	 * @param style not {@code null}
+	 * @param lineSpacing must be {@literal >= 1}
+	 * @param alignment not {@code null}
+	 * @throws NullPointerException if text, style or alignment is {@code null}
+	 * @throws IllegalArgumentException if lineSpacing is {@literal < 1}
+	 */
 	public HCPMultilineText(String text, HCPStyle style, float lineSpacing, HCPHorizontalAlignment alignment) {
 		super(text, style);
 		this.lines = text.split("\\n", -1); // -1 -> do not discard trailing empty strings
@@ -39,7 +96,7 @@ public class HCPMultilineText extends HCPAbstractText {
 	private float checkLineSpacing(float lineSpacing) {
 		if (lineSpacing < 1)
 			throw new IllegalArgumentException("Line spacing must be equal to or greater than one, but was "
-					+ lineSpacing + ".");
+				+ lineSpacing + ".");
 		return lineSpacing;
 	}
 
