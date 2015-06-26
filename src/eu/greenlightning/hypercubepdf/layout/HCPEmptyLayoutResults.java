@@ -1,5 +1,7 @@
 package eu.greenlightning.hypercubepdf.layout;
 
+import java.util.NoSuchElementException;
+
 /**
  * An empty {@link HCPLayoutResults}. Can be returned by {@link HCPLayout} if there are no results.
  * 
@@ -17,7 +19,7 @@ public enum HCPEmptyLayoutResults implements HCPLayoutResults {
 
 	@Override
 	public void next() {
-		throw new IllegalStateException("No more elements.");
+		throw new NoSuchElementException("No more elements.");
 	}
 
 	@Override

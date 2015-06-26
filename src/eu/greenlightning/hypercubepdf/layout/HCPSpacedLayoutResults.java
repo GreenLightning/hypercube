@@ -1,5 +1,7 @@
 package eu.greenlightning.hypercubepdf.layout;
 
+import java.util.NoSuchElementException;
+
 abstract class HCPSpacedLayoutResults implements HCPLayoutResults {
 
 	private final HCPLayoutSpace space;
@@ -36,7 +38,7 @@ abstract class HCPSpacedLayoutResults implements HCPLayoutResults {
 	@Override
 	public final void next() {
 		if (!hasNext())
-			throw new IllegalStateException("No more elements.");
+			throw new NoSuchElementException("No more elements.");
 		index++;
 		beforeNext(index);
 		start = getStart(index);
