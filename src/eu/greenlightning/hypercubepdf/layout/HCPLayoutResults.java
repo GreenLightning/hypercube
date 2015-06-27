@@ -51,6 +51,9 @@ public interface HCPLayoutResults {
 	
 	/**
 	 * Returns the index of the element that the current result deals with.
+	 * <p>
+	 * I.&nbsp;e., the index which was used to get the elements size from the {@code sizes} array provided
+	 * to the {@linkplain HCPLayout#apply(HCPLayoutSpace, float[])} method.
 	 * 
 	 * @return the index of the element of the current result
 	 * @throws IllegalStateException if no result is active, i.&nbsp;e. after this instance has been created and after a
