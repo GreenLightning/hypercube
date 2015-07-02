@@ -16,7 +16,7 @@ import eu.greenlightning.hypercubepdf.HCPElement;
  *
  * @author Green Lightning
  */
-public abstract class HCPAbstractText implements HCPElement {
+public abstract class HCPText implements HCPElement {
 
 	private static final boolean DEBUG = false;
 
@@ -31,16 +31,53 @@ public abstract class HCPAbstractText implements HCPElement {
 	protected final HCPStyle style;
 
 	/**
-	 * Creates a new {@link HCPAbstractText} instance using the specified text and style.
+	 * Creates a new {@link HCPText} instance using the specified text and style.
 	 * 
 	 * @param text not {@code null}
 	 * @param style not {@code null}
 	 * @throws NullPointerException if text or style is {@code null}
 	 */
-	public HCPAbstractText(String text, HCPStyle style) {
+	public HCPText(String text, HCPStyle style) {
 		this.text = Objects.requireNonNull(text, "Text must not be null.");
 		this.style = Objects.requireNonNull(style, "Style must not be null.");
 	}
+
+	/**
+	 * Returns an {@link HCPText} instance that paints the specified text, but has all other properties in common with
+	 * this instance. This method may return {@code this} instance if it already uses the specified text.
+	 * 
+	 * @param newText not {@code null}
+	 * @return an {@link HCPText} instance that paints the specified text
+	 * @throws NullPointerException if newText is {@code null}
+	 */
+	public HCPText withText(String newText) {
+		Objects.requireNonNull(newText, "NewText must not be null.");
+		return this.text.equals(newText) ? this : createInstance(newText, style);
+	}
+
+	/**
+	 * Returns an {@link HCPText} instance that uses the specified style, but has all other properties in common with
+	 * this instance. This method may return {@code this} instance if it already uses the specified style.
+	 * 
+	 * @param newStyle not {@code null}
+	 * @return an {@link HCPText} instance that uses the specified style
+	 * @throws NullPointerException if newStyle is {@code null}
+	 */
+	public HCPText withStyle(HCPStyle newStyle) {
+		Objects.requireNonNull(newStyle, "NewStyle must not be null.");
+		return this.style.equals(newStyle) ? this : createInstance(text, newStyle);
+	}
+
+	/**
+	 * Creates a new object of the same class as this object, using the same properties as this object but the specified
+	 * text and style.
+	 * 
+	 * @param text not {@code null}
+	 * @param style not {@code null}
+	 * @return a new object of this class that uses the specified text and style
+	 * @throws NullPointerException if text or style is {@code null}
+	 */
+	protected abstract HCPText createInstance(String text, HCPStyle style);
 
 	@Override
 	public final void paint(PDPageContentStream content, PDRectangle shape) throws IOException {

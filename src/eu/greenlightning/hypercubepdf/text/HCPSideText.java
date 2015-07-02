@@ -11,7 +11,7 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
  * 
  * @author Green Lightning
  */
-public class HCPSideText extends HCPAbstractText {
+public class HCPSideText extends HCPText {
 
 	/**
 	 * Constructs a {@link HCPSideText} from a {@link String} and an {@link HCPStyle}.
@@ -22,6 +22,11 @@ public class HCPSideText extends HCPAbstractText {
 	 */
 	public HCPSideText(String text, HCPStyle style) {
 		super(text, style);
+	}
+
+	@Override
+	protected HCPText createInstance(String text, HCPStyle style) {
+		return new HCPSideText(text, style);
 	}
 
 	@Override

@@ -22,7 +22,7 @@ import eu.greenlightning.hypercubepdf.align.HCPHorizontalAlignment;
  *
  * @author Green Lightning
  */
-public class HCPMultilineText extends HCPAbstractText {
+public class HCPMultilineText extends HCPText {
 
 	private static final float DEFAULT_LINE_SPACING = 1.2f;
 	private static final HCPHorizontalAlignment DEFAULT_ALIGNMENT = HCPHorizontalAlignment.LEFT;
@@ -98,6 +98,11 @@ public class HCPMultilineText extends HCPAbstractText {
 			throw new IllegalArgumentException("Line spacing must be equal to or greater than one, but was "
 				+ lineSpacing + ".");
 		return lineSpacing;
+	}
+
+	@Override
+	protected HCPText createInstance(String text, HCPStyle style) {
+		return new HCPMultilineText(text, style, lineSpacing, alignment);
 	}
 
 	@Override

@@ -172,4 +172,29 @@ public class HCPStyle {
 		return font.getFontBoundingBox().getHeight() * size / 1000;
 	}
 
+	@Override
+	public boolean equals(Object object) {
+		if (object == this)
+			return true;
+		if (!(object instanceof HCPStyle))
+			return false;
+		HCPStyle style = (HCPStyle) object;
+		if (Float.compare(size, style.getSize()) != 0)
+			return false;
+		if (!color.equals(style.getColor()))
+			return false;
+		if (!font.equals(style.getFont()))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + Float.floatToIntBits(size);
+		result = 31 * result + color.hashCode();
+		result = 31 * result + font.hashCode();
+		return result;
+	}
+
 }

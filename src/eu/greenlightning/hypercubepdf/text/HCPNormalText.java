@@ -11,7 +11,7 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
  * 
  * @author Green Lightning
  */
-public class HCPNormalText extends HCPAbstractText {
+public class HCPNormalText extends HCPText {
 	
 	/**
 	 * Constructs a {@link HCPNormalText} from a {@link String} and an {@link HCPStyle}.
@@ -22,6 +22,11 @@ public class HCPNormalText extends HCPAbstractText {
 	 */
 	public HCPNormalText(String text, HCPStyle style) {
 		super(text, style);
+	}
+	
+	@Override
+	protected HCPText createInstance(String text, HCPStyle style) {
+		return new HCPNormalText(text, style);
 	}
 
 	@Override
