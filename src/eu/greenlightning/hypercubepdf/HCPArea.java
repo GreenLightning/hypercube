@@ -84,6 +84,42 @@ public class HCPArea implements HCPElement {
 		this.border = Objects.requireNonNull(border, "Border must not be null. Maybe use NO_BORDER?");
 	}
 
+	/**
+	 * Returns an {@link HCPArea} instance that uses the specified border color, but has all other properties in common
+	 * with this instance. This method may return {@code this} instance if it already uses the specified border color.
+	 * 
+	 * @param borderColor the new border color or {@code null}
+	 * @return an {@link HCPArea} instance that uses the specified border color
+	 */
+	public HCPArea withBorderColor(Color borderColor) {
+		// Use Objects.equals() because the colors can be null
+		return Objects.equals(this.borderColor, borderColor) ? this : new HCPArea(contentColor, borderColor, border);
+	}
+
+	/**
+	 * Returns an {@link HCPArea} instance that uses the specified content color, but has all other properties in common
+	 * with this instance. This method may return {@code this} instance if it already uses the specified content color.
+	 * 
+	 * @param contentColor the new content color or {@code null}
+	 * @return an {@link HCPArea} instance that uses the specified content color
+	 */
+	public HCPArea withContentColor(Color contentColor) {
+		// Use Objects.equals() because the colors can be null
+		return Objects.equals(this.contentColor, contentColor) ? this : new HCPArea(contentColor, borderColor, border);
+	}
+
+	/**
+	 * Returns an {@link HCPArea} instance that uses the specified border type, but has all other properties in common
+	 * with this instance. This method may return {@code this} instance if it already uses the specified border type.
+	 * 
+	 * @param border not {@code null}
+	 * @return an {@link HCPArea} instance that uses the specified border type
+	 * @throws NullPointerException if border is {@code null}
+	 */
+	public HCPArea withBorder(HCPBorderType border) {
+		return this.border.equals(border) ? this : new HCPArea(contentColor, borderColor, border);
+	}
+
 	@Override
 	public float getWidth() {
 		float width = 1;

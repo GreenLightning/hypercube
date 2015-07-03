@@ -46,13 +46,12 @@ public abstract class HCPText implements HCPElement {
 	 * Returns an {@link HCPText} instance that paints the specified text, but has all other properties in common with
 	 * this instance. This method may return {@code this} instance if it already uses the specified text.
 	 * 
-	 * @param newText not {@code null}
+	 * @param text not {@code null}
 	 * @return an {@link HCPText} instance that paints the specified text
-	 * @throws NullPointerException if newText is {@code null}
+	 * @throws NullPointerException if text is {@code null}
 	 */
-	public HCPText withText(String newText) {
-		Objects.requireNonNull(newText, "NewText must not be null.");
-		return this.text.equals(newText) ? this : createInstance(newText, style);
+	public HCPText withText(String text) {
+		return this.text.equals(text) ? this : createInstance(text, style);
 	}
 
 	/**
@@ -63,9 +62,8 @@ public abstract class HCPText implements HCPElement {
 	 * @return an {@link HCPText} instance that uses the specified style
 	 * @throws NullPointerException if newStyle is {@code null}
 	 */
-	public HCPText withStyle(HCPStyle newStyle) {
-		Objects.requireNonNull(newStyle, "NewStyle must not be null.");
-		return this.style.equals(newStyle) ? this : createInstance(text, newStyle);
+	public HCPText withStyle(HCPStyle style) {
+		return this.style.equals(style) ? this : createInstance(text, style);
 	}
 
 	/**

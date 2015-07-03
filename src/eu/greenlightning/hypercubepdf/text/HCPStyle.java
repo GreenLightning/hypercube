@@ -79,42 +79,39 @@ public class HCPStyle {
 	}
 
 	/**
-	 * Returns an {@link HCPStyle} with the specified font.
-	 * <p>
-	 * If the font returned by {@link #getFont()} is specified, this method simply returns {@code this}.
+	 * Returns an {@link HCPStyle} instance that uses the specified font, but has all other properties in common
+	 * with this instance. This method may return {@code this} instance if it already uses the specified font.
 	 * 
 	 * @param font not {@code null}
-	 * @return a new {@link HCPStyle} with the specified font
+	 * @return an {@link HCPStyle} instance that uses the specified font
 	 * @throws NullPointerException if font is {@code null}
 	 */
 	public HCPStyle withFont(PDFont font) {
-		return font == this.font ? this : new HCPStyle(font, size, color);
+		return this.font.equals(font) ? this : new HCPStyle(font, size, color);
 	}
 
 	/**
-	 * Returns an {@link HCPStyle} with the specified size.
-	 * <p>
-	 * If the size returned by {@link #getSize()} is specified, this method simply returns {@code this}.
+	 * Returns an {@link HCPStyle} instance that uses the specified size, but has all other properties in common
+	 * with this instance. This method may return {@code this} instance if it already uses the specified size.
 	 * 
 	 * @param size must be {@literal >= 1}
-	 * @return a new {@link HCPStyle} with the specified size
+	 * @return an {@link HCPStyle} instance that uses the specified size
 	 * @throws IllegalArgumentException if size {@literal < 1}
 	 */
 	public HCPStyle withSize(float size) {
-		return size == this.size ? this : new HCPStyle(font, size, color);
+		return this.size == size ? this : new HCPStyle(font, size, color);
 	}
 
 	/**
-	 * Returns an {@link HCPStyle} with the specified color.
-	 * <p>
-	 * If the color returned by {@link #getColor()} is specified, this method simply returns {@code this}.
+	 * Returns an {@link HCPStyle} instance that uses the specified color, but has all other properties in common
+	 * with this instance. This method may return {@code this} instance if it already uses the specified color.
 	 * 
 	 * @param color not {@code null}
-	 * @return an {@link HCPStyle} with the specified color
+	 * @return an {@link HCPStyle} instance that uses the specified color
 	 * @throws NullPointerException if color is {@code null}
 	 */
 	public HCPStyle withColor(Color color) {
-		return color == this.color ? this : new HCPStyle(font, size, color);
+		return this.color.equals(color) ? this : new HCPStyle(font, size, color);
 	}
 
 	/**
