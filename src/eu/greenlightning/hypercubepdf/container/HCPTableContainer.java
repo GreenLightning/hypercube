@@ -107,7 +107,34 @@ public class HCPTableContainer implements HCPElement {
 			}
 		}
 
-		// TODO: paint spanning elements
+		List<Span> spans = new ArrayList<>();
+		for (HCPTablePosition position : positions) {
+			if (position.spans()) {
+				spans.add(new Span(position));
+			}
+		}
+
+		horizontalResults.reset();
+		while (horizontalResults.hasNext()) {
+			horizontalResults.next();
+			for (Span span : spans) {
+				span.setLeftX(horizontalResults.getIndex(), horizontalResults.getLow());
+				span.setRightX(horizontalResults.getIndex(), horizontalResults.getHigh());
+			}
+		}
+
+		verticalResults.reset();
+		while (verticalResults.hasNext()) {
+			verticalResults.next();
+			for (Span span : spans) {
+				span.setLowerY(verticalResults.getIndex(), verticalResults.getLow());
+				span.setUpperY(verticalResults.getIndex(), verticalResults.getHigh());
+			}
+		}
+
+		for (Span span : spans) {
+			span.paint(content);
+		}
 	}
 
 	private Optional<HCPElement> findSimpleElementAt(int x, int y) {
@@ -116,6 +143,46 @@ public class HCPTableContainer implements HCPElement {
 
 	private Stream<HCPTablePosition> positions() {
 		return Arrays.stream(positions);
+	}
+
+	private static class Span {
+
+		private final HCPTablePosition position;
+		private final PDRectangle shape;
+
+		public Span(HCPTablePosition position) {
+			this.position = position;
+			this.shape = new PDRectangle();
+		}
+
+		public void setLeftX(int index, float x) {
+			if (position.getX() == index) {
+				shape.setLowerLeftX(x);
+			}
+		}
+
+		public void setRightX(int index, float x) {
+			if (position.getX() + position.getHorizontalSpan() - 1 == index) {
+				shape.setUpperRightX(x);
+			}
+		}
+
+		public void setUpperY(int index, float y) {
+			if (position.getY() == index) {
+				shape.setUpperRightY(y);
+			}
+		}
+
+		public void setLowerY(int index, float y) {
+			if (position.getY() + position.getVerticalSpan() - 1 == index) {
+				shape.setLowerLeftY(y);
+			}
+		}
+
+		public void paint(PDPageContentStream content) throws IOException {
+			position.getElement().paint(content, shape);
+		}
+
 	}
 
 }

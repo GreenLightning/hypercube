@@ -9,8 +9,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import eu.greenlightning.hypercubepdf.border.HCPEmptyBorder;
 import eu.greenlightning.hypercubepdf.container.*;
-import eu.greenlightning.hypercubepdf.layout.HCPFlowLayout;
-import eu.greenlightning.hypercubepdf.layout.HCPStretchLayout;
+import eu.greenlightning.hypercubepdf.layout.*;
 import eu.greenlightning.hypercubepdf.text.HCPNormalText;
 import eu.greenlightning.hypercubepdf.text.HCPStyle;
 
@@ -21,6 +20,7 @@ public class ContainerExample {
 			demoSequentialContainers(document);
 			demoBorderContainer(document);
 			demoGridContainer(document);
+			demoTableContainer(document);
 			document.save("examples/containers.pdf");
 		}
 	}
@@ -75,6 +75,17 @@ public class ContainerExample {
 		HCPFlowLayout vertical = HCPFlowLayout.getInstance();
 		HCPElement grid = new HCPGridContainer(horizontal, vertical, elements);
 		Examples.paintOnNewPage(document, "Grid", grid);
+	}
+	
+	private static void demoTableContainer(PDDocument document) throws IOException {
+		HCPTablePosition[] positions = new HCPTablePosition[5];
+		positions[0] = new HCPTablePosition(new HCPArea(Color.GREEN), 0, 0, 1, 2);
+		positions[1] = new HCPTablePosition(new HCPArea(Color.RED), 1, 0, 2, 1);
+		positions[2] = new HCPTablePosition(new HCPArea(Color.ORANGE), 1, 1);
+		positions[3] = new HCPTablePosition(new HCPArea(Color.YELLOW), 2, 1, 1, 2);
+		positions[4] = new HCPTablePosition(new HCPArea(Color.BLUE), 0, 2, 2, 1);
+		HCPElement table = new HCPTableContainer(HCPSplitLayout.getInstance(), positions);
+		Examples.paintOnNewPage(document, "Table", table);
 	}
 
 	private static HCPElement createBox(String label, Color stroking, Color nonStroking) {
