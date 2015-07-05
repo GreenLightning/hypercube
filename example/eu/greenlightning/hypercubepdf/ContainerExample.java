@@ -84,24 +84,27 @@ public class ContainerExample {
 	}
 
 	private static void demoTableContainer(PDDocument document) throws IOException {
-		HCPElement[][] elements = new HCPElement[3][3];
-		HCPStyle style = new HCPStyle(PDType1Font.HELVETICA_BOLD, 24, Color.BLACK);
-		for (int y = 0; y < elements.length; y++) {
-			HCPElement area = new HCPArea(y % 2 == 0 ? null : new Color(200, 200, 200));
-			for (int x = 0; x < elements[y].length; x++) {
-				HCPElement text = new HCPNormalText(String.format("%c%d", ('A' + x), (y + 1)), style);
-				text = HCPEmptyBorder.getHorizontalVerticalInstance(text, 20, 10);
-				elements[y][x] = new HCPStack(area, text);
-			}
-		}
-		HCPElement left = HCPTableContainer.create(HCPStretchLayout.getInstance())
+		HCPTableContainer.Builder builder = HCPTableContainer.create(HCPStretchLayout.getInstance())
 			.addPosition(HCPSized.withHeight(new HCPArea(Color.BLUE), 20), 1, 0, 3, 1)
 			.addPosition(HCPSized.withHeight(new HCPArea(Color.GREEN), 20), 1, 1)
 			.addPosition(HCPSized.withHeight(new HCPArea(Color.CYAN), 20), 2, 1, 2, 1)
 			.addPosition(HCPSized.withWidth(new HCPArea(Color.ORANGE), 20), 0, 2, 1, 2)
-			.addPosition(HCPSized.withWidth(new HCPArea(Color.YELLOW), 20), 0, 4)
-			.addElements(elements, 1, 2)
-			.build();
+			.addPosition(HCPSized.withWidth(new HCPArea(Color.YELLOW), 20), 0, 4);
+
+		HCPStyle style = new HCPStyle(PDType1Font.HELVETICA_BOLD, 24, Color.BLACK);
+		for (int y = 0; y < 3; y++) {
+			if (y % 2 == 1) {
+				builder.addPosition(new HCPArea(new Color(200, 200, 200)), 1, 2 + y, 3, 1);
+			}
+			for (int x = 0; x < 3; x++) {
+				HCPElement text = new HCPNormalText(String.format("%c%d", ('A' + x), (y + 1)), style);
+				text = HCPEmptyBorder.getHorizontalVerticalInstance(text, 20, 10);
+				builder.addPosition(text, 1 + x, 2 + y);
+			}
+		}
+		
+		HCPElement left = builder.build();
+		
 		HCPElement right = HCPTableContainer.create(HCPSplitLayout.getInstance())
 			.addPosition(new HCPArea(Color.GREEN), 0, 0, 1, 2)
 			.addPosition(new HCPArea(Color.RED), 1, 0, 2, 1)

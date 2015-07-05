@@ -131,76 +131,50 @@ public class HCPTableContainer implements HCPElement {
 
 	@Override
 	public void paint(PDPageContentStream content, PDRectangle shape) throws IOException {
-		PDRectangle elementShape = new PDRectangle();
-
-		HCPLayoutSpace verticalSpace = new HCPLayoutSpace(shape.getUpperRightY(), shape.getLowerLeftY());
-		HCPLayoutResults verticalResults = verticalLayout.apply(verticalSpace, getHeights());
+		List<PositionPainter> painters = new ArrayList<>(positions.length);
+		for (HCPTablePosition position : positions) {
+			painters.add(new PositionPainter(position));
+		}
 
 		HCPLayoutSpace horizontalSpace = new HCPLayoutSpace(shape.getLowerLeftX(), shape.getUpperRightX());
 		HCPLayoutResults horizontalResults = horizontalLayout.apply(horizontalSpace, getWidths());
+		setCoordinates(painters, horizontalResults, PositionPainter::setLeftX, PositionPainter::setRightX);
 
-		while (verticalResults.hasNext()) {
-			verticalResults.next();
-			elementShape.setLowerLeftY(verticalResults.getLow());
-			elementShape.setUpperRightY(verticalResults.getHigh());
-			horizontalResults.reset();
-			while (horizontalResults.hasNext()) {
-				horizontalResults.next();
-				elementShape.setLowerLeftX(horizontalResults.getLow());
-				elementShape.setUpperRightX(horizontalResults.getHigh());
-				int x = horizontalResults.getIndex();
-				int y = verticalResults.getIndex();
-				Optional<HCPElement> element = findSimpleElementAt(x, y);
-				if (element.isPresent()) {
-					element.get().paint(content, elementShape);
-				}
-			}
-		}
+		HCPLayoutSpace verticalSpace = new HCPLayoutSpace(shape.getUpperRightY(), shape.getLowerLeftY());
+		HCPLayoutResults verticalResults = verticalLayout.apply(verticalSpace, getHeights());
+		setCoordinates(painters, verticalResults, PositionPainter::setLowerY, PositionPainter::setUpperY);
 
-		List<Span> spans = new ArrayList<>();
-		for (HCPTablePosition position : positions) {
-			if (position.spans()) {
-				spans.add(new Span(position));
-			}
-		}
-
-		horizontalResults.reset();
-		while (horizontalResults.hasNext()) {
-			horizontalResults.next();
-			for (Span span : spans) {
-				span.setLeftX(horizontalResults.getIndex(), horizontalResults.getLow());
-				span.setRightX(horizontalResults.getIndex(), horizontalResults.getHigh());
-			}
-		}
-
-		verticalResults.reset();
-		while (verticalResults.hasNext()) {
-			verticalResults.next();
-			for (Span span : spans) {
-				span.setLowerY(verticalResults.getIndex(), verticalResults.getLow());
-				span.setUpperY(verticalResults.getIndex(), verticalResults.getHigh());
-			}
-		}
-
-		for (Span span : spans) {
-			span.paint(content);
+		for (PositionPainter painter : painters) {
+			painter.paint(content);
 		}
 	}
 
-	private Optional<HCPElement> findSimpleElementAt(int x, int y) {
-		return positions().filter(p -> p.isAt(x, y) && !p.spans()).findAny().map(HCPTablePosition::getElement);
+	private void setCoordinates(List<PositionPainter> painters, HCPLayoutResults results, CoordinateSetter low,
+		CoordinateSetter high) {
+		while (results.hasNext()) {
+			results.next();
+			for (PositionPainter painter : painters) {
+				low.setCoordinate(painter, results.getIndex(), results.getLow());
+				high.setCoordinate(painter, results.getIndex(), results.getHigh());
+			}
+		}
 	}
 
 	private Stream<HCPTablePosition> positions() {
 		return Arrays.stream(positions);
 	}
 
-	private static class Span {
+	@FunctionalInterface
+	private static interface CoordinateSetter {
+			void setCoordinate(PositionPainter painter, int index, float coordinate);
+	}
+
+	private static class PositionPainter {
 
 		private final HCPTablePosition position;
 		private final PDRectangle shape;
 
-		public Span(HCPTablePosition position) {
+		public PositionPainter(HCPTablePosition position) {
 			this.position = position;
 			this.shape = new PDRectangle();
 		}
