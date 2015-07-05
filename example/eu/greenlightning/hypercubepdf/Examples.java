@@ -24,7 +24,7 @@ public final class Examples {
 	public static void paintOnNewPage(PDDocument document, String title, HCPElement element) throws IOException {
 		HCPStyle style = new HCPStyle(PDType1Font.HELVETICA_BOLD, 24);
 		HCPElement text = new HCPNormalText(title, style);
-		element = HCPBorderContainer.builder().top(text).topSpacing(30).center(element).build();
+		element = HCPBorderContainer.create().top(text).topSpacing(30).center(element).build();
 		element = HCPEmptyBorder.getAllSidesInstance(element, 50);
 		HCPPage page = HCPPages.addLandscapePage(document, PDPage.PAGE_SIZE_A4);
 		page.paint(element);

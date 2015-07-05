@@ -26,8 +26,8 @@ public class BorderExample {
 
 		HCPElement border = HCPEmptyBorder.getHorizontalVerticalInstance(blue, 100, 50);
 
-		HCPElement with = HCPBorderContainer.builder().top(red).center(border).bottom(red).build();
-		HCPElement without = HCPBorderContainer.builder().top(red).center(blue).bottom(red).build();
+		HCPElement with = HCPBorderContainer.create().top(red).center(border).bottom(red).build();
+		HCPElement without = HCPBorderContainer.create().top(red).center(blue).bottom(red).build();
 
 		Examples.paintOnNewPage(document, "Empty Border", with, without);
 	}

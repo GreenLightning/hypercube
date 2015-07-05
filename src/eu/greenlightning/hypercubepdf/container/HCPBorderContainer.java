@@ -38,7 +38,7 @@ public class HCPBorderContainer implements HCPElement {
 	 * 
 	 * @return a new builder for a {@link HCPBorderContainer}
 	 */
-	public static Builder builder() {
+	public static Builder create() {
 		return new Builder();
 	}
 
@@ -51,6 +51,9 @@ public class HCPBorderContainer implements HCPElement {
 
 		private HCPElement top, bottom, left, right, center;
 		private float topSpacing, bottomSpacing, leftSpacing, rightSpacing;
+		
+		// Hide the constructor so that HCPBorderContainer.create() must be used
+		private Builder() {}
 
 		/**
 		 * Sets the top element, overwriting previous calls to this method. If {@code null}, removes the top element in

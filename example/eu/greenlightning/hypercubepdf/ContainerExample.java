@@ -30,9 +30,9 @@ public class ContainerExample {
 		HCPElement b = createBox("B", new Color(0, 64, 0), Color.GREEN);
 		HCPElement c = createBox("C", Color.BLUE, Color.CYAN);
 
-		a = HCPSized.withSize(a,  50, 200);
+		a = HCPSized.withSize(a, 50, 200);
 		b = HCPSized.withSize(b, 100, 100);
-		c = HCPSized.withSize(c, 150,  50);
+		c = HCPSized.withSize(c, 150, 50);
 
 		HCPElement horizontal = HCPContainers.getHorizontalSplit(a, b, c);
 		HCPElement vertical = HCPContainers.getVerticalSplit(10, a, b, c);
@@ -54,8 +54,14 @@ public class ContainerExample {
 		HCPElement right = createBox("RIGHT", Color.BLACK, Color.BLUE);
 		HCPElement bottom = createBox("BOTTOM", Color.BLACK, Color.ORANGE);
 
-		HCPElement border = HCPBorderContainer.builder().top(top).left(left).center(center).right(right)
-				.bottom(bottom).allSpacings(10).build();
+		HCPElement border = HCPBorderContainer.create()
+			.top(top)
+			.left(left)
+			.center(center)
+			.right(right)
+			.bottom(bottom)
+			.allSpacings(10)
+			.build();
 		Examples.paintOnNewPage(document, "Border", border);
 	}
 
@@ -76,16 +82,34 @@ public class ContainerExample {
 		HCPElement grid = new HCPGridContainer(horizontal, vertical, elements);
 		Examples.paintOnNewPage(document, "Grid", grid);
 	}
-	
+
 	private static void demoTableContainer(PDDocument document) throws IOException {
-		HCPTablePosition[] positions = new HCPTablePosition[5];
-		positions[0] = new HCPTablePosition(new HCPArea(Color.GREEN), 0, 0, 1, 2);
-		positions[1] = new HCPTablePosition(new HCPArea(Color.RED), 1, 0, 2, 1);
-		positions[2] = new HCPTablePosition(new HCPArea(Color.ORANGE), 1, 1);
-		positions[3] = new HCPTablePosition(new HCPArea(Color.YELLOW), 2, 1, 1, 2);
-		positions[4] = new HCPTablePosition(new HCPArea(Color.BLUE), 0, 2, 2, 1);
-		HCPElement table = new HCPTableContainer(HCPSplitLayout.getInstance(), positions);
-		Examples.paintOnNewPage(document, "Table", table);
+		HCPElement[][] elements = new HCPElement[3][3];
+		HCPStyle style = new HCPStyle(PDType1Font.HELVETICA_BOLD, 24, Color.BLACK);
+		for (int y = 0; y < elements.length; y++) {
+			HCPElement area = new HCPArea(y % 2 == 0 ? null : new Color(200, 200, 200));
+			for (int x = 0; x < elements[y].length; x++) {
+				HCPElement text = new HCPNormalText(String.format("%c%d", ('A' + x), (y + 1)), style);
+				text = HCPEmptyBorder.getHorizontalVerticalInstance(text, 20, 10);
+				elements[y][x] = new HCPStack(area, text);
+			}
+		}
+		HCPElement left = HCPTableContainer.create(HCPStretchLayout.getInstance())
+			.addPosition(HCPSized.withHeight(new HCPArea(Color.BLUE), 20), 1, 0, 3, 1)
+			.addPosition(HCPSized.withHeight(new HCPArea(Color.GREEN), 20), 1, 1)
+			.addPosition(HCPSized.withHeight(new HCPArea(Color.CYAN), 20), 2, 1, 2, 1)
+			.addPosition(HCPSized.withWidth(new HCPArea(Color.ORANGE), 20), 0, 2, 1, 2)
+			.addPosition(HCPSized.withWidth(new HCPArea(Color.YELLOW), 20), 0, 4)
+			.addElements(elements, 1, 2)
+			.build();
+		HCPElement right = HCPTableContainer.create(HCPSplitLayout.getInstance())
+			.addPosition(new HCPArea(Color.GREEN), 0, 0, 1, 2)
+			.addPosition(new HCPArea(Color.RED), 1, 0, 2, 1)
+			.addPosition(new HCPArea(Color.ORANGE), 1, 1)
+			.addPosition(new HCPArea(Color.YELLOW), 2, 1, 1, 2)
+			.addPosition(new HCPArea(Color.BLUE), 0, 2, 2, 1)
+			.build();
+		Examples.paintOnNewPage(document, "Table", left, right);
 	}
 
 	private static HCPElement createBox(String label, Color stroking, Color nonStroking) {

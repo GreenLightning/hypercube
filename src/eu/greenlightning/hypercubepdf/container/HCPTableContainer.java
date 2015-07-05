@@ -13,28 +13,78 @@ import eu.greenlightning.hypercubepdf.layout.*;
 
 public class HCPTableContainer implements HCPElement {
 
+	public static Builder create(HCPLayout layout) {
+		return new Builder(layout);
+	}
+
+	public static Builder create(HCPLayout horizontalLayout, HCPLayout verticalLayout) {
+		return new Builder(horizontalLayout, verticalLayout);
+	}
+
+	public static final class Builder {
+
+		private HCPLayout horizontalLayout, verticalLayout;
+		private List<HCPTablePosition> positions;
+
+		private Builder(HCPLayout layout) {
+			this(layout, layout);
+		}
+
+		private Builder(HCPLayout horizontalLayout, HCPLayout verticalLayout) {
+			this.horizontalLayout = Objects.requireNonNull(horizontalLayout, "Horizontal layout must not be null.");
+			this.verticalLayout = Objects.requireNonNull(verticalLayout, "Vertical layout must not be null.");
+			this.positions = new ArrayList<>();
+		}
+
+		public Builder addPosition(HCPElement element, int x, int y) {
+			return addPosition(new HCPTablePosition(element, x, y));
+		}
+
+		public Builder addPosition(HCPElement element, int x, int y, int horizontalSpan, int verticalSpan) {
+			return addPosition(new HCPTablePosition(element, x, y, horizontalSpan, verticalSpan));
+		}
+
+		public Builder addPosition(HCPTablePosition position) {
+			positions.add(Objects.requireNonNull(position, "Position must not be null."));
+			return this;
+		}
+
+		public Builder addElements(HCPElement[][] elements, final int x, final int y) {
+			if (elements != null) {
+				for (int yIndex = 0; yIndex < elements.length; yIndex++) {
+					HCPElement[] row = elements[yIndex];
+					if (row != null) {
+						for (int xIndex = 0; xIndex < row.length; xIndex++) {
+							HCPElement element = row[xIndex];
+							if (element != null)
+								addPosition(element, x + xIndex, y + yIndex);
+						}
+					}
+				}
+			}
+			return this;
+		}
+
+		public HCPTableContainer build() {
+			return new HCPTableContainer(horizontalLayout, verticalLayout, positions);
+		}
+
+	}
+
+	private static final HCPTablePosition[] EMPTY_POSITION_ARRAY = new HCPTablePosition[0];
+
 	private final HCPLayout horizontalLayout;
 	private final HCPLayout verticalLayout;
 	private final HCPTablePosition[] positions;
 	private final int horizontalCount;
 	private final int verticalCount;
 
-	public HCPTableContainer(HCPLayout layout, HCPTablePosition[] positions) {
-		this(layout, layout, positions);
-	}
-
-	public HCPTableContainer(HCPLayout horizontalLayout, HCPLayout verticalLayout, HCPTablePosition[] positions) {
-		this.horizontalLayout = Objects.requireNonNull(horizontalLayout, "Horizontal layout must not be null.");
-		this.verticalLayout = Objects.requireNonNull(verticalLayout, "Vertical layout must not be null.");
-		this.positions = Objects.requireNonNull(positions, "Positions must not be null.").clone();
-		checkPositions();
+	private HCPTableContainer(HCPLayout horizontalLayout, HCPLayout verticalLayout, List<HCPTablePosition> positions) {
+		this.horizontalLayout = horizontalLayout;
+		this.verticalLayout = verticalLayout;
+		this.positions = positions.toArray(EMPTY_POSITION_ARRAY);
 		this.horizontalCount = calculateCount(HCPTablePosition::getX);
 		this.verticalCount = calculateCount(HCPTablePosition::getY);
-	}
-
-	private void checkPositions() {
-		for (int i = 0; i < positions.length; i++)
-			Objects.requireNonNull(positions[i], String.format("Positions must not contain null (index = %d).", i));
 	}
 
 	private int calculateCount(ToIntFunction<? super HCPTablePosition> mapper) {
