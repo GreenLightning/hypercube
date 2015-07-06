@@ -1,5 +1,7 @@
 package eu.greenlightning.hypercubepdf;
 
+import static eu.greenlightning.hypercubepdf.container.HCPTablePosition.*;
+
 import java.awt.Color;
 import java.io.IOException;
 
@@ -30,9 +32,9 @@ public class ContainerExample {
 		HCPElement b = createBox("B", new Color(0, 64, 0), Color.GREEN);
 		HCPElement c = createBox("C", Color.BLUE, Color.CYAN);
 
-		a = HCPSized.withSize(a, 50, 200);
+		a = HCPSized.withSize(a,  50, 200);
 		b = HCPSized.withSize(b, 100, 100);
-		c = HCPSized.withSize(c, 150, 50);
+		c = HCPSized.withSize(c, 150,  50);
 
 		HCPElement horizontal = HCPContainers.getHorizontalSplit(a, b, c);
 		HCPElement vertical = HCPContainers.getVerticalSplit(10, a, b, c);
@@ -85,7 +87,7 @@ public class ContainerExample {
 
 	private static void demoTableContainer(PDDocument document) throws IOException {
 		HCPTableContainer.Builder builder = HCPTableContainer.create(HCPStretchLayout.getInstance())
-			.addPosition(HCPSized.withHeight(new HCPArea(Color.BLUE), 20), 1, 0, 3, 1)
+			.addPosition(HCPSized.withHeight(new HCPArea(Color.BLUE), 20), 1, 0, REMAINING, 1)
 			.addPosition(HCPSized.withHeight(new HCPArea(Color.GREEN), 20), 1, 1)
 			.addPosition(HCPSized.withHeight(new HCPArea(Color.CYAN), 20), 2, 1, 2, 1)
 			.addPosition(HCPSized.withWidth(new HCPArea(Color.ORANGE), 20), 0, 2, 1, 2)
@@ -94,7 +96,7 @@ public class ContainerExample {
 		HCPStyle style = new HCPStyle(PDType1Font.HELVETICA_BOLD, 24, Color.BLACK);
 		for (int y = 0; y < 3; y++) {
 			if (y % 2 == 1) {
-				builder.addPosition(new HCPArea(new Color(200, 200, 200)), 1, 2 + y, 3, 1);
+				builder.addPosition(new HCPArea(new Color(200, 200, 200)), 1, 2 + y, REMAINING, 1);
 			}
 			for (int x = 0; x < 3; x++) {
 				HCPElement text = new HCPNormalText(String.format("%c%d", ('A' + x), (y + 1)), style);

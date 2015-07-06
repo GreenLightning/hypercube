@@ -83,8 +83,8 @@ public class HCPTableContainer implements HCPElement {
 		this.horizontalLayout = horizontalLayout;
 		this.verticalLayout = verticalLayout;
 		this.positions = positions.toArray(EMPTY_POSITION_ARRAY);
-		this.horizontalCount = calculateCount(HCPTablePosition::getX);
-		this.verticalCount = calculateCount(HCPTablePosition::getY);
+		this.horizontalCount = calculateCount(HCPTablePosition::getRightIndex);
+		this.verticalCount = calculateCount(HCPTablePosition::getLowerIndex);
 	}
 
 	private int calculateCount(ToIntFunction<? super HCPTablePosition> mapper) {
@@ -133,7 +133,7 @@ public class HCPTableContainer implements HCPElement {
 	public void paint(PDPageContentStream content, PDRectangle shape) throws IOException {
 		List<PositionPainter> painters = new ArrayList<>(positions.length);
 		for (HCPTablePosition position : positions) {
-			painters.add(new PositionPainter(position));
+			painters.add(new PositionPainter(position, horizontalCount, verticalCount));
 		}
 
 		HCPLayoutSpace horizontalSpace = new HCPLayoutSpace(shape.getLowerLeftX(), shape.getUpperRightX());
@@ -172,10 +172,13 @@ public class HCPTableContainer implements HCPElement {
 	private static class PositionPainter {
 
 		private final HCPTablePosition position;
+		private final int rightIndex, lowerIndex;
 		private final PDRectangle shape;
 
-		public PositionPainter(HCPTablePosition position) {
+		public PositionPainter(HCPTablePosition position, int horizontalCount, int verticalCount) {
 			this.position = position;
+			this.rightIndex = position.horizontallyRemaining() ? horizontalCount - 1 : position.getRightIndex();
+			this.lowerIndex = position.verticallyRemaining() ? verticalCount - 1 : position.getLowerIndex();
 			this.shape = new PDRectangle();
 		}
 
@@ -186,7 +189,7 @@ public class HCPTableContainer implements HCPElement {
 		}
 
 		public void setRightX(int index, float x) {
-			if (position.getX() + position.getHorizontalSpan() - 1 == index) {
+			if (rightIndex == index) {
 				shape.setUpperRightX(x);
 			}
 		}
@@ -198,7 +201,7 @@ public class HCPTableContainer implements HCPElement {
 		}
 
 		public void setLowerY(int index, float y) {
-			if (position.getY() + position.getVerticalSpan() - 1 == index) {
+			if (lowerIndex == index) {
 				shape.setLowerLeftY(y);
 			}
 		}

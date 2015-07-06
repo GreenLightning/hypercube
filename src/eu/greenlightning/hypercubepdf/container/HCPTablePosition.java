@@ -7,6 +7,8 @@ import eu.greenlightning.hypercubepdf.HCPElement;
 
 public class HCPTablePosition {
 
+	public static final int REMAINING = -1;
+
 	private final HCPElement element;
 	private final int x, y;
 	private final int horizontalSpan, verticalSpan;
@@ -30,8 +32,8 @@ public class HCPTablePosition {
 	 * @param element not {@code null}
 	 * @param x must be {@literal >= 0}
 	 * @param y must be {@literal >= 0}
-	 * @param horizontalSpan must be {@literal >= 1}
-	 * @param verticalSpan must be {@literal >= 1}
+	 * @param horizontalSpan must be {@literal >= 1} or {@link #REMAINING}
+	 * @param verticalSpan must be {@literal >= 1} or {@link #REMAINING}
 	 * @throws NullPointerException if element is {@code null}
 	 * @throws IllegalArgumentException if x, y, horizontalSpan or verticalSpan contains an illegal value
 	 */
@@ -50,8 +52,8 @@ public class HCPTablePosition {
 	}
 
 	private int checkSpan(int span, String name) {
-		if (span < 1)
-			throw new IllegalArgumentException(name + " must be equal to or greater than one.");
+		if (span != REMAINING && span < 1)
+			throw new IllegalArgumentException(name + " must be REMAINING or equal to or greater than one.");
 		return span;
 	}
 
@@ -79,16 +81,32 @@ public class HCPTablePosition {
 		return y;
 	}
 
+	public int getRightIndex() {
+		return horizontallyRemaining() ? getX() : getX() + getHorizontalSpan() - 1;
+	}
+
+	public int getLowerIndex() {
+		return verticallyRemaining() ? getY() : getY() + getVerticalSpan() - 1;
+	}
+
 	public boolean spans() {
 		return spansHorizontally() || spansVertically();
 	}
 
 	public boolean spansHorizontally() {
-		return horizontalSpan > 1;
+		return horizontallyRemaining() || horizontalSpan > 1;
 	}
 
 	public boolean spansVertically() {
-		return verticalSpan > 1;
+		return verticallyRemaining() || verticalSpan > 1;
+	}
+
+	public boolean horizontallyRemaining() {
+		return horizontalSpan == REMAINING;
+	}
+
+	public boolean verticallyRemaining() {
+		return verticalSpan == REMAINING;
 	}
 
 	public int getHorizontalSpan() {
