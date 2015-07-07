@@ -13,6 +13,50 @@ import eu.greenlightning.hypercubepdf.layout.*;
 
 public class HCPTableContainer implements HCPElement {
 
+	public static enum HCPSpanDistributionPolicy {
+		EQUAL {
+			@Override
+			protected void distribute(float[] sizes, float extra, int startIndex, int endIndex) {
+				int count = endIndex - startIndex + 1;
+				float amount = extra / count;
+				for (int i = startIndex; i <= endIndex; i++) {
+					sizes[i] += amount;
+				}
+			}
+		},
+		PROPORTIONAL {
+			@Override
+			protected void distribute(float[] sizes, float extra, int startIndex, int endIndex) {
+				float total = totalSize(sizes, startIndex, endIndex);
+				if (total == 0) {
+					EQUAL.distribute(sizes, extra, startIndex, endIndex);
+					return;
+				}
+				for (int i = startIndex; i <= endIndex; i++) {
+					sizes[i] += extra * sizes[i] / total;
+				}
+			}
+		};
+
+		protected void adjustSizes(float[] sizes, float targetSize, int startIndex, int endIndex) {
+			float extra = targetSize - totalSize(sizes, startIndex, endIndex);
+			if (extra > 0) {
+				distribute(sizes, extra, startIndex, endIndex);
+			}
+		}
+
+		protected abstract void distribute(float[] sizes, float extra, int startIndex, int endIndex);
+
+		protected final float totalSize(float[] sizes, int startIndex, int endIndex) {
+			float size = 0;
+			for (int i = startIndex; i <= endIndex; i++) {
+				size += sizes[i];
+			}
+			return size;
+		}
+
+	}
+
 	public static Builder create(HCPLayout layout) {
 		return new Builder(layout);
 	}
@@ -24,16 +68,56 @@ public class HCPTableContainer implements HCPElement {
 	public static final class Builder {
 
 		private HCPLayout horizontalLayout, verticalLayout;
+		private HCPSpanDistributionPolicy horizontalPolicy, verticalPolicy;
 		private List<HCPTablePosition> positions;
 
 		private Builder(HCPLayout layout) {
-			this(layout, layout);
+			layout(layout);
 		}
 
 		private Builder(HCPLayout horizontalLayout, HCPLayout verticalLayout) {
-			this.horizontalLayout = Objects.requireNonNull(horizontalLayout, "Horizontal layout must not be null.");
-			this.verticalLayout = Objects.requireNonNull(verticalLayout, "Vertical layout must not be null.");
+			horizontalLayout(horizontalLayout);
+			verticalLayout(verticalLayout);
+		}
+
+		{
+			this.horizontalPolicy = HCPSpanDistributionPolicy.PROPORTIONAL;
+			this.verticalPolicy = HCPSpanDistributionPolicy.PROPORTIONAL;
 			this.positions = new ArrayList<>();
+		}
+
+		public Builder layout(HCPLayout layout) {
+			Objects.requireNonNull(layout, "Layout must not be null.");
+			horizontalLayout(layout);
+			verticalLayout(layout);
+			return this;
+		}
+
+		public Builder horizontalLayout(HCPLayout horizontalLayout) {
+			this.horizontalLayout = Objects.requireNonNull(horizontalLayout, "Horizontal layout must not be null.");
+			return this;
+		}
+
+		public Builder verticalLayout(HCPLayout verticalLayout) {
+			this.verticalLayout = Objects.requireNonNull(verticalLayout, "Vertical layout must not be null.");
+			return this;
+		}
+
+		public Builder distributionPolicy(HCPSpanDistributionPolicy policy) {
+			Objects.requireNonNull(policy, "Policy must not be null.");
+			horizontalDistributionPolicy(policy);
+			verticalDistributionPolicy(policy);
+			return this;
+		}
+
+		public Builder horizontalDistributionPolicy(HCPSpanDistributionPolicy horizontalPolicy) {
+			this.horizontalPolicy = Objects.requireNonNull(horizontalPolicy, "Horizontal policy must not be null.");
+			return this;
+		}
+
+		public Builder verticalDistributionPolicy(HCPSpanDistributionPolicy verticalPolicy) {
+			this.verticalPolicy = Objects.requireNonNull(verticalPolicy, "Vertical policy must not be null.");
+			return this;
 		}
 
 		public Builder addPosition(HCPElement element, int x, int y) {
@@ -66,22 +150,25 @@ public class HCPTableContainer implements HCPElement {
 		}
 
 		public HCPTableContainer build() {
-			return new HCPTableContainer(horizontalLayout, verticalLayout, positions);
+			return new HCPTableContainer(horizontalLayout, verticalLayout, horizontalPolicy, verticalPolicy, positions);
 		}
 
 	}
 
 	private static final HCPTablePosition[] EMPTY_POSITION_ARRAY = new HCPTablePosition[0];
 
-	private final HCPLayout horizontalLayout;
-	private final HCPLayout verticalLayout;
+	private final HCPLayout horizontalLayout, verticalLayout;
+	private final HCPSpanDistributionPolicy horizontalPolicy, verticalPolicy;
 	private final HCPTablePosition[] positions;
-	private final int horizontalCount;
-	private final int verticalCount;
+	private final int horizontalCount, verticalCount;
 
-	private HCPTableContainer(HCPLayout horizontalLayout, HCPLayout verticalLayout, List<HCPTablePosition> positions) {
+	private HCPTableContainer(HCPLayout horizontalLayout, HCPLayout verticalLayout,
+		HCPSpanDistributionPolicy horizontalPolicy, HCPSpanDistributionPolicy verticalPolicy,
+		List<HCPTablePosition> positions) {
 		this.horizontalLayout = horizontalLayout;
 		this.verticalLayout = verticalLayout;
+		this.horizontalPolicy = horizontalPolicy;
+		this.verticalPolicy = verticalPolicy;
 		this.positions = positions.toArray(EMPTY_POSITION_ARRAY);
 		this.horizontalCount = calculateCount(HCPTablePosition::getRightIndex);
 		this.verticalCount = calculateCount(HCPTablePosition::getLowerIndex);
@@ -106,7 +193,11 @@ public class HCPTableContainer implements HCPElement {
 					widths[index] = width;
 			}
 		}
-		// TODO: adjust for spans
+		for (HCPTablePosition position : positions) {
+			if (position.spansHorizontally()) {
+				horizontalPolicy.adjustSizes(widths, position.getWidth(), position.getX(), position.getRightIndex());
+			}
+		}
 		return widths;
 	}
 
@@ -125,7 +216,11 @@ public class HCPTableContainer implements HCPElement {
 					heights[index] = height;
 			}
 		}
-		// TODO: adjust for spans
+		for (HCPTablePosition position : positions) {
+			if (position.spansVertically()) {
+				verticalPolicy.adjustSizes(heights, position.getHeight(), position.getY(), position.getLowerIndex());
+			}
+		}
 		return heights;
 	}
 
