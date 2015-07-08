@@ -170,8 +170,8 @@ public class HCPTableContainer implements HCPElement {
 		this.horizontalPolicy = horizontalPolicy;
 		this.verticalPolicy = verticalPolicy;
 		this.positions = positions.toArray(EMPTY_POSITION_ARRAY);
-		this.horizontalCount = calculateCount(HCPTablePosition::getRightIndex);
-		this.verticalCount = calculateCount(HCPTablePosition::getLowerIndex);
+		this.horizontalCount = calculateCount(HCPTablePosition::getRightX);
+		this.verticalCount = calculateCount(HCPTablePosition::getLowerY);
 	}
 
 	private int calculateCount(ToIntFunction<? super HCPTablePosition> mapper) {
@@ -195,7 +195,7 @@ public class HCPTableContainer implements HCPElement {
 		}
 		for (HCPTablePosition position : positions) {
 			if (position.spansHorizontally()) {
-				horizontalPolicy.adjustSizes(widths, position.getWidth(), position.getX(), position.getRightIndex());
+				horizontalPolicy.adjustSizes(widths, position.getWidth(), position.getX(), position.getRightX());
 			}
 		}
 		return widths;
@@ -218,7 +218,7 @@ public class HCPTableContainer implements HCPElement {
 		}
 		for (HCPTablePosition position : positions) {
 			if (position.spansVertically()) {
-				verticalPolicy.adjustSizes(heights, position.getHeight(), position.getY(), position.getLowerIndex());
+				verticalPolicy.adjustSizes(heights, position.getHeight(), position.getY(), position.getLowerY());
 			}
 		}
 		return heights;
@@ -272,8 +272,8 @@ public class HCPTableContainer implements HCPElement {
 
 		public PositionPainter(HCPTablePosition position, int horizontalCount, int verticalCount) {
 			this.position = position;
-			this.rightIndex = position.horizontallyRemaining() ? horizontalCount - 1 : position.getRightIndex();
-			this.lowerIndex = position.verticallyRemaining() ? verticalCount - 1 : position.getLowerIndex();
+			this.rightIndex = position.horizontallyRemaining() ? horizontalCount - 1 : position.getRightX();
+			this.lowerIndex = position.verticallyRemaining() ? verticalCount - 1 : position.getLowerY();
 			this.shape = new PDRectangle();
 		}
 

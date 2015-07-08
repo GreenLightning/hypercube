@@ -5,8 +5,21 @@ import java.util.Objects;
 
 import eu.greenlightning.hypercubepdf.HCPElement;
 
+/**
+ * Describes the position of an {@link HCPElement} inside an {@link HCPTableContainer}. An element may extend over
+ * multiple continuous columns and / or rows. Therefore the position is defined by the x- and y-coordinates of the
+ * element as well as the number of columns and rows spanned.
+ * <p>
+ * This class is immutable.
+ * 
+ * @author Green Lightning
+ */
 public class HCPTablePosition {
 
+	/**
+	 * Can be used as a span value to indicate that the element should always extend to the end of the container
+	 * spanning over all remaining columns or rows.
+	 */
 	public static final int REMAINING = -1;
 
 	private final HCPElement element;
@@ -57,62 +70,149 @@ public class HCPTablePosition {
 		return span;
 	}
 
+	/**
+	 * Returns the element at this position.
+	 * 
+	 * @return the element at this position
+	 */
 	public HCPElement getElement() {
 		return element;
 	}
 
+	/**
+	 * Returns the width of the element at this position.
+	 * 
+	 * @return the width of the element
+	 * @throws IOException if an error occurs
+	 */
 	public float getWidth() throws IOException {
 		return element.getWidth();
 	}
 
+	/**
+	 * Returns the height of the element at this position.
+	 * 
+	 * @return the height of the element
+	 * @throws IOException if an error occurs
+	 */
 	public float getHeight() throws IOException {
 		return element.getHeight();
 	}
 
+	/**
+	 * Returns whether this position has the specified coordinates.
+	 * 
+	 * @param x the x-coordinate to test for
+	 * @param y the y-coordinate to test for
+	 * @return {@code true} if the coordinates of this position match the specified coordinates; {@code false} otherwise
+	 */
 	public boolean isAt(int x, int y) {
 		return this.x == x && this.y == y;
 	}
 
+	/**
+	 * Returns the x-coordinate of this position.
+	 * 
+	 * @return the x-coordinate
+	 */
 	public int getX() {
 		return x;
 	}
 
+	/**
+	 * Returns the y-coordinate of this position.
+	 * 
+	 * @return the y-coordinate
+	 */
 	public int getY() {
 		return y;
 	}
 
-	public int getRightIndex() {
+	/**
+	 * Returns the right-most x-coordinate spanned by this position. If this position does not span multiple columns,
+	 * the value of {@link #getX()} is returned. If this position spans all remaining columns, the value of
+	 * {@link #getX()} is returned by default as well.
+	 * 
+	 * @return the right-most x-coordinate
+	 */
+	public int getRightX() {
 		return horizontallyRemaining() ? getX() : getX() + getHorizontalSpan() - 1;
 	}
 
-	public int getLowerIndex() {
+	/**
+	 * Returns the lowest y-coordinate spanned by this position. If this position does not span multiple rows, the value
+	 * of {@link #getY()} is returned. If this position spans all remaining rows, the value of {@link #getY()} is
+	 * returned by default as well.
+	 * 
+	 * @return the lowest y-coordinate
+	 */
+	public int getLowerY() {
 		return verticallyRemaining() ? getY() : getY() + getVerticalSpan() - 1;
 	}
 
+	/**
+	 * Returns whether this position spans multiple columns and / or rows.
+	 * 
+	 * @return whether this position spans multiple columns and / or rows
+	 */
 	public boolean spans() {
 		return spansHorizontally() || spansVertically();
 	}
 
+	/**
+	 * Returns whether this position spans multiple columns.
+	 * 
+	 * @return whether this position spans multiple columns
+	 */
 	public boolean spansHorizontally() {
 		return horizontallyRemaining() || horizontalSpan > 1;
 	}
 
+	/**
+	 * Returns whether this position spans multiple rows.
+	 * 
+	 * @return whether this position spans multiple rows
+	 */
 	public boolean spansVertically() {
 		return verticallyRemaining() || verticalSpan > 1;
 	}
 
+	/**
+	 * Returns whether this position spans over all remaining columns.
+	 * 
+	 * @return whether this position spans all remaining columns
+	 */
 	public boolean horizontallyRemaining() {
 		return horizontalSpan == REMAINING;
 	}
 
+	/**
+	 * Returns whether this position spans over all remaining rows.
+	 * 
+	 * @return whether this position spans all remaining rows
+	 */
 	public boolean verticallyRemaining() {
 		return verticalSpan == REMAINING;
 	}
 
+	/**
+	 * Returns the number of columns spanned by this position. A value of 1 indicates that this position spans only one
+	 * column and is a regular position. This method may also return the special value {@link #REMAINING} which
+	 * indicates that the position spans all remaining columns in the {@link HCPTableContainer}.
+	 * 
+	 * @return the number of columns spanned by this position or {@link #REMAINING}
+	 */
 	public int getHorizontalSpan() {
 		return horizontalSpan;
 	}
 
+	/**
+	 * Returns the number of rows spanned by this position. A value of 1 indicates that this position spans only one row
+	 * and is a regular position. This method may also return the special value {@link #REMAINING} which indicates that
+	 * the position spans all remaining rows in the {@link HCPTableContainer}.
+	 * 
+	 * @return the number of rows spanned by this position or {@link #REMAINING}
+	 */
 	public int getVerticalSpan() {
 		return verticalSpan;
 	}
