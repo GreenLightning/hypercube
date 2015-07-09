@@ -11,6 +11,23 @@ import org.apache.pdfbox.pdmodel.edit.PDPageContentStream;
 import eu.greenlightning.hypercubepdf.HCPElement;
 import eu.greenlightning.hypercubepdf.layout.*;
 
+/**
+ * Paints a table of {@link HCPElement}s. Allows for empty cells and elements spanning over multiple cells. Elements are
+ * added to the container wrapped in {@link HCPTablePosition}s which describe the cell(s) that the elements occupy.
+ * <p>
+ * Rows and columns are laid out independently and different {@link HCPLayout}s can be used for rows and columns. The
+ * maximum width of all elements which occupy only a given column is used as the base width of that column. The maximum
+ * height of all elements which occupy only a given row is used as the height of that row. If an element spans over
+ * multiple columns or rows and the sum of all base sizes of these columns or rows is smaller than the element, the
+ * remaining size is split up and added to the base sizes of these columns or rows. How the remaining size is split up
+ * is determined by an {@link HCPSpanDistributionPolicy}. Different policies can be configured for columns and rows.
+ * <p>
+ * The elements are painted in the order in that they were added to the container.
+ * <p>
+ * This class is immutable.
+ * 
+ * @author Green Lightning
+ */
 public class HCPTableContainer implements HCPElement {
 
 	public static enum HCPSpanDistributionPolicy {

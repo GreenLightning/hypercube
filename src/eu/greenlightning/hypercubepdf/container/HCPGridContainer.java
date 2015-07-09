@@ -11,9 +11,14 @@ import eu.greenlightning.hypercubepdf.HCPEmpty;
 import eu.greenlightning.hypercubepdf.layout.*;
 
 /**
- * Paints a 2-dimensional grid of {@link HCPElement}s. Rows and columns are laid out independently and different
- * {@link HCPLayout}s can be used for rows and columns.The maximum width of all elements in a column is used as the
- * width of the column. The maximum height of all elements in a row is used as the height of the row.
+ * Paints a 2-dimensional grid of {@link HCPElement}s. Each cell must contain an element. One element cannot stretch
+ * over the border of its cell. However, an element can be added multiple times to the container (in which case it will
+ * be painted multiple times as well).
+ * <p>
+ * Rows and columns are laid out independently and different {@link HCPLayout}s can be used for rows and columns. The
+ * maximum width of all elements in a column is used as the width of the column. The maximum height of all elements in a
+ * row is used as the height of the row. Each element is painted using the size of its cell, i.&nbsp;e. using the width
+ * of the column it is in and the height of the row it is in.
  * <p>
  * The elements are painted in rows from left to right and rows are painted from top to bottom.
  * <p>

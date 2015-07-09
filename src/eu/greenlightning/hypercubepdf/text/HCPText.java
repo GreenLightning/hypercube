@@ -58,7 +58,7 @@ public abstract class HCPText implements HCPElement {
 	 * Returns an {@link HCPText} instance that uses the specified style, but has all other properties in common with
 	 * this instance. This method may return {@code this} instance if it already uses the specified style.
 	 * 
-	 * @param newStyle not {@code null}
+	 * @param style not {@code null}
 	 * @return an {@link HCPText} instance that uses the specified style
 	 * @throws NullPointerException if newStyle is {@code null}
 	 */
