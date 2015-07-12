@@ -2,6 +2,15 @@
 
 Hypercube is a PDF creation library build on top of Apache PDFBox featuring diverse layout algorithms as well as text and page utilities.
 
+## Dependencies
+
+- Java 8
+- PDFBox 1.8.9
+
+## License
+
+Hypercube is licensed under the MIT License.
+
 ## Project Structure
 
 The main source code is located in the **src** folder. Currently used libraries are in **lib** and everything in this folder should be on the classpath. The sources and other data belonging to the libraries are in **_lib** (note the underscore), but this folder should *not* be on the classpath.
