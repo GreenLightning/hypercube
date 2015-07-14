@@ -28,5 +28,10 @@ public enum HCPEmpty implements HCPElement {
 
 	@Override
 	public void paint(PDPageContentStream content, PDRectangle shape) {}
+	
+	@Override
+	public String toString() {
+		return "[HCPEmpty]";
+	}
 
 }
