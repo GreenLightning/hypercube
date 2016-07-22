@@ -1,4 +1,4 @@
-# Hypercube PDF
+![Hypercube PDF](/img/combined.png?raw=true)
 
 Hypercube is a PDF creation library build on top of Apache PDFBox featuring diverse layout algorithms as well as text and page utilities.
 
