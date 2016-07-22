@@ -1,24 +1,41 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<title>Hypercube PDF</title>
-		<style type="text/css">
-			#content {
-				display: table;
-				margin-left: auto;
-				margin-right: auto;
-			}
-		</style>
-	</head>
-	<body>
-		<div id="content">
-			<h1>Hypercube PDF</h1>
-			<p>This page is under construction...</p>
-			<ul>
-				<li><a href="https://github.com/GreenLightning/hypercube">GitHub Repository</a></li>
-				<li><a href="apidocs">API Documentation</a></li>
-			</ul>
-		</div>
-	</body>
+<head>
+	<meta charset="utf-8">
+	<title>Hypercube PDF</title>
+	<style type="text/css">
+		* {
+			box-sizing: border-box;
+		}
+
+		#content {
+			max-width: 768px;
+			margin-left: auto;
+			margin-right: auto;
+			box-sizing: content-box;
+			padding-left: 2%;
+			padding-right: 2%;
+		}
+
+		.title-image {
+			display: block;
+			width: 100%;
+			max-width: 512px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
+</head>
+<body>
+	<div id="content">
+		<img src="img/logo1024.png" class="title-image" alt="Hypercube Logo">
+		<img src="img/text.png" class="title-image" alt="Hypercube PDF">
+		<p>Hypercube is a PDF creation library build on top of Apache PDFBox featuring diverse layout algorithms as well as text and page utilities.</p>
+		<ul>
+			<li><a href="https://github.com/GreenLightning/hypercube/releases">Downloads</a></li>
+			<li><a href="apidocs">API Documentation</a></li>
+			<li><a href="https://github.com/GreenLightning/hypercube">GitHub Repository</a></li>
+		</ul>
+	</div>
+</body>
 </html>
